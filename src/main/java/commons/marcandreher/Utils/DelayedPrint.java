@@ -1,6 +1,6 @@
 package commons.marcandreher.Utils;
 
-import marcandreher.commons.Commons.Flogger;
+import commons.marcandreher.Commons.Flogger;
 
 public class DelayedPrint {
 
