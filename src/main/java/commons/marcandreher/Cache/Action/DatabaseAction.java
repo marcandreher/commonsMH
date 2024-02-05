@@ -8,16 +8,16 @@ import commons.marcandreher.Utils.Color;
 
 public class DatabaseAction implements Action {
 
-    private MySQL mySQL;
+    public MySQL mysql;
 
     public void closeDb() {
-        mySQL.close();
+        mysql.close();
     }
 
     @Override
     public void executeAction(Flogger logger)  {
         try {
-            mySQL = Database.getConnection();
+            mysql = Database.getConnection();
         } catch (Exception e) {
             logger.log(Prefix.ERROR, "-> Failed to start DatabaseAction " + Color.RED + this.toString(), 0);
         }
