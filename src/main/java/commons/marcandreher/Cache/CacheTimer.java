@@ -31,7 +31,6 @@ public class CacheTimer {
     }
 
     public void runUpdate(Flogger logger) {
-        System.out.println(Prefix.INFO + "Updating Cache | " + actionList.size() + " Actions");
         logger.log(Prefix.INFO, "-> Updating actions | " +actionList.size(), 3);
 
         for(int i = 0; i < actionList.size(); i++) {
