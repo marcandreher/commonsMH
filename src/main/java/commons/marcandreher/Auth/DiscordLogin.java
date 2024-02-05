@@ -30,6 +30,7 @@ public class DiscordLogin {
         disUrl = auth.getAuthorizationUrl(StringUtils.generateRandomString(5));
     }
 
+    // TODO: Move to Routes
     public void registerDiscordRoute(String route, String redirect, DiscordLoginHandler handler) {
         Spark.get("/discord/login", new Route() {
             @Override
@@ -44,7 +45,7 @@ public class DiscordLogin {
                     return null;
                 }
 
-                handler.handleDiscordLogin(u);
+                handler.handleDiscordLogin(u, request, response);
 
                 response.redirect(redirect);
                 return null;
