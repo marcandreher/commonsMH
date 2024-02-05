@@ -27,3 +27,4 @@ replay_pid*
 dependency-reduced-pom.xml
 target/
 logs/
+.vscode

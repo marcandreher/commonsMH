@@ -5,8 +5,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>marcandreher</groupId>
-  <artifactId>commons</artifactId>
+  <groupId>com.github.marcandreher</groupId>
+  <artifactId>commonsMH</artifactId>
   <version>1.0</version>
 
   <name>commons</name>
@@ -47,7 +47,7 @@
       <groupId>club.minnced</groupId>
       <artifactId>discord-webhooks</artifactId>
       <version>LATEST</version>
-    </dependency>
+  </dependency>
     <dependency>
       <groupId>com.github.dfabulich</groupId>
       <artifactId>sitemapgen4j</artifactId>
@@ -93,11 +93,11 @@
       <artifactId>slf4j-nop</artifactId>
       <version>2.0.6</version>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.6</version>
-    </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.6</version>
+      </dependency>
   </dependencies>
 
 </project>
