@@ -3,6 +3,8 @@ package commons.marcandreher.Commons;
 import commons.marcandreher.Utils.Color;
 
 public class Flogger {
+
+    public static Flogger instance;
     public enum Prefix {
         INFO(Color.CYAN + "[Info] " + Color.RESET), // INFO prefix
         ERROR(Color.RED + "[ERROR] " + Color.RESET), // ERROR prefix
@@ -37,6 +39,7 @@ public class Flogger {
     }
 
     public Flogger(int logLevel) {
+        instance = this;
         this.logLevel = logLevel;
     }
 

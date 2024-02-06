@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import commons.marcandreher.Commons.Database;
+import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.MySQL;
 import spark.Request;
 import spark.Response;
@@ -47,10 +48,13 @@ public class JsonProcessingRoute implements Route {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         String curParameter = null;
+
         try {
                 for (String parameter : requiredParamters) {
+                    Flogger.instance.log(parameter, 0);
                     curParameter = parameter;
                     if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
+                        Flogger.instance.log("missing parameter", 0);
                         return missingParameters(parameter);
                     }
                 }
