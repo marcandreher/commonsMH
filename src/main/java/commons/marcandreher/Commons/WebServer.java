@@ -39,6 +39,7 @@ public class WebServer {
     }
 
     public void setWebPort(int webPort) {
+        Spark.port(webPort);
         this.webPort = webPort;
     }
 
@@ -47,6 +48,7 @@ public class WebServer {
     }
 
     public void setWebIp(String webIp) {
+        Spark.ipAddress(webIp);
         this.webIp = webIp;
     }
 
@@ -90,6 +92,8 @@ public class WebServer {
     public void ignite(String webIp, int webPort) throws IOException {
         Spark.port(webPort);
         Spark.ipAddress(webIp);
+        this.webPort = webPort;
+        this.webIp = webIp;
         runWebServer();
     }
 
