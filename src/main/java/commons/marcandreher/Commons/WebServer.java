@@ -57,7 +57,7 @@ public class WebServer {
      *
      * @param logger the logger to be used for logging messages
      */
-    public WebServer(Flogger logger, Database database, short cacheLevel) {
+    public WebServer(Flogger logger, short cacheLevel) {
         this.cacheLevel = cacheLevel;
         this.logger = logger;
 

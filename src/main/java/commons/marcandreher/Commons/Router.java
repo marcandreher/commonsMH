@@ -1,15 +1,39 @@
 package commons.marcandreher.Commons;
 
+import java.util.Objects;
 import java.util.Set;
 
+import commons.marcandreher.Auth.DiscordLogin;
+import commons.marcandreher.Auth.DiscordLoginHandler;
+import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Engine.UploadHandler;
 import commons.marcandreher.Utils.RequestType;
+import dev.coly.discordoauth2.DiscordAPI;
+import dev.coly.discordoauth2.objects.Tokens;
+import dev.coly.discordoauth2.objects.User;
+import spark.Response;
 import spark.Route;
 import spark.Spark;
-import java.util.Objects;
 
 public class Router {
 
+    private Flogger logger;
+
+    public Flogger getLogger() {
+        return this.logger;
+    }
+
+    public void setLogger(Flogger logger) {
+        this.logger = logger;
+    }
+
+    public Set<RoutePair> getRoutes() {
+        return this.routes;
+    }
+
+    public void setRoutes(Set<RoutePair> routes) {
+        this.routes = routes;
+    }
 
     public class RoutePair {
         private RequestType requestType;
@@ -30,8 +54,10 @@ public class Router {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
             RoutePair routePair = (RoutePair) o;
             return requestType == routePair.requestType &&
                     Objects.equals(route, routePair.route);
@@ -45,11 +71,11 @@ public class Router {
 
     Set<RoutePair> routes;
 
-    public Router() {
+    public Router(Flogger logger) {
+        this.logger = logger;
         routes = new java.util.HashSet<>();
-        
-    }
 
+    }
 
     public void addUploadHandler(String location, UploadHandler handler) {
         routes.add((new RoutePair(RequestType.POST, location)));
@@ -87,8 +113,27 @@ public class Router {
         Spark.patch(route, routeClass);
     }
 
-    
+    public void registerDiscordRoute(String route, String redirect, DiscordLoginHandler handler, DiscordLogin dc) {
+        Spark.get(route, new Route() {
+            @Override
+            public Object handle(spark.Request request, Response response) {
+                User u = null;
+                try {
+                    Tokens tokens = dc.auth.getTokens(request.queryParams("code"));
+                    u = DiscordAPI.getUser(tokens.getAccessToken());
+                    logger.log(Prefix.INFO, "-> Discord Login", 3);
+                } catch (Exception e) {
+                    logger.log(Prefix.ERROR, "Discord login failed", 0);
+                    return null;
+                }
 
+                handler.handleDiscordLogin(u, request, response);
 
-    
+                response.redirect(redirect);
+                return null;
+
+            }
+        });
+    }
+
 }

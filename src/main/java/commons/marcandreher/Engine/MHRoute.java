@@ -37,6 +37,8 @@ public class MHRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
+        this.request = request;
+        this.response = response;
         this.stopWatch = new Stopwatch();
         this.stopWatch.start();
 
