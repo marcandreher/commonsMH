@@ -45,6 +45,18 @@ public class JsonProcessingRoute implements Route {
         return this;
     }
 
+    public String returnResponse(Object toMap) {
+        response.status(200);
+       
+        closeDb();
+        try {
+            return objectMapper.writeValueAsString(toMap);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String missingParameters(String parameter) {
         response.status(500);
         sr = new ServerResponse();
@@ -79,6 +91,21 @@ public class JsonProcessingRoute implements Route {
         sr = new ServerResponse();
         sr.setCode(500);
         sr.setMessage("parameter: " + parameter+":expectedType: "+expectedType);
+        closeDb();
+        try {
+            return objectMapper.writeValueAsString(sr);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    
+    public String internalError() {
+        response.status(500);
+        sr = new ServerResponse();
+        sr.setCode(500);
+        sr.setMessage("internal error");
         closeDb();
         try {
             return objectMapper.writeValueAsString(sr);
