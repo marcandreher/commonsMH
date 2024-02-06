@@ -11,7 +11,8 @@ public class Flogger {
         MYSQL(Color.BLUE + "[MySQL] " + Color.RESET), // MYSQL prefix
         INPUT(Color.MAGENTA + "[Input] " + Color.RESET), // INPUT prefix
         OPENID(Color.GREEN + "[OpenID] " + Color.RESET),
-        ACTION(Color.GREEN + "[Action] " + Color.RESET); // CRAWLER prefix
+        ACTION(Color.GREEN + "[Action] " + Color.RESET), // CRAWLER prefix
+        API(Color.MAGENTA + "[API]: " + Color.RESET);
     
         private final String code;
     

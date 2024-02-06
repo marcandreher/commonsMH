@@ -96,7 +96,9 @@ public class WebServer {
     public void ignite(String webIp, int webPort, CommandHandler handler) throws IOException {
         Spark.port(webPort);
         Spark.ipAddress(webIp);
-        handler.registerCommand(new Webserver());
+        Webserver webServer = new Webserver();
+        webServer.setWebServer(this);
+        handler.registerCommand(webServer);
         runWebServer();
     }
 
