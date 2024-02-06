@@ -36,16 +36,23 @@ public class JsonProcessingRoute implements Route {
         response.type("application/json");
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
+        try {
+            
         for (String parameter : requiredParamters) {
             try {
                 if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
                     return missingParameters(parameter);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 return missingParameters(parameter);
             }
            
         }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return this;
     }
