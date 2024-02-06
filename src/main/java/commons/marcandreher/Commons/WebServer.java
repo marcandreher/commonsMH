@@ -107,7 +107,7 @@ public class WebServer {
         Webserver webServer = new Webserver();
         webServer.setWebServer(this);
         handler.registerCommand(webServer);
-        
+
         runWebServer();
     }
 
@@ -155,12 +155,6 @@ public class WebServer {
         });
 
         Spark.awaitInitialization();
-    }
-
-    public void addGZipCompression() {
-        Spark.after((req, res) -> {
-            res.header("Content-Encoding", "gzip");
-        });
     }
 
     /**
