@@ -11,30 +11,63 @@ import commons.marcandreher.Utils.RequestType;
 import dev.coly.discordoauth2.DiscordAPI;
 import dev.coly.discordoauth2.objects.Tokens;
 import dev.coly.discordoauth2.objects.User;
+import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
 
+/**
+ * The Router class handles routing and request handling for the application.
+ */
 public class Router {
 
     private Flogger logger;
+    private Set<RoutePair> routes;
 
+    public Router(Flogger logger) {
+        this.logger = logger;
+        routes = new java.util.HashSet<>();
+    }
+
+    /**
+     * Gets the logger instance.
+     *
+     * @return The logger instance.
+     */
     public Flogger getLogger() {
         return this.logger;
     }
 
+    /**
+     * Sets the logger instance.
+     *
+     * @param logger The logger instance to set.
+     */
     public void setLogger(Flogger logger) {
         this.logger = logger;
     }
 
+    /**
+     * Gets the set of route pairs.
+     *
+     * @return The set of route pairs.
+     */
     public Set<RoutePair> getRoutes() {
         return this.routes;
     }
 
+    /**
+     * Sets the set of route pairs.
+     *
+     * @param routes The set of route pairs to set.
+     */
     public void setRoutes(Set<RoutePair> routes) {
         this.routes = routes;
     }
 
+    /**
+     * Represents a pair of request type and route.
+     */
     public class RoutePair {
         private RequestType requestType;
         private String route;
@@ -69,54 +102,93 @@ public class Router {
         }
     }
 
-    Set<RoutePair> routes;
-
-    public Router(Flogger logger) {
-        this.logger = logger;
-        routes = new java.util.HashSet<>();
-
-    }
-
+    /**
+     * Adds an upload handler for the specified location.
+     *
+     * @param location The location to add the upload handler.
+     * @param handler  The upload handler to add.
+     */
     public void addUploadHandler(String location, UploadHandler handler) {
         routes.add((new RoutePair(RequestType.POST, location)));
         Spark.before(location, handler);
     }
 
+    /**
+     * Adds GZip compression to the response.
+     */
     public void addGZipCompression() {
         Spark.after((req, res) -> {
             res.header("Content-Encoding", "gzip");
         });
     }
 
+    /**
+     * Adds a GET route.
+     *
+     * @param route      The route to add.
+     * @param routeClass The route class to handle the request.
+     */
     public void get(String route, Route routeClass) {
         routes.add(new RoutePair(RequestType.GET, route));
         Spark.get(route, routeClass);
     }
 
+    /**
+     * Adds a POST route.
+     *
+     * @param route      The route to add.
+     * @param routeClass The route class to handle the request.
+     */
     public void post(String route, Route routeClass) {
         routes.add(new RoutePair(RequestType.POST, route));
         Spark.post(route, routeClass);
     }
 
+    /**
+     * Adds a PUT route.
+     *
+     * @param route      The route to add.
+     * @param routeClass The route class to handle the request.
+     */
     public void put(String route, Route routeClass) {
         routes.add(new RoutePair(RequestType.PUT, route));
         Spark.put(route, routeClass);
     }
 
+    /**
+     * Adds a DELETE route.
+     *
+     * @param route      The route to add.
+     * @param routeClass The route class to handle the request.
+     */
     public void delete(String route, Route routeClass) {
         routes.add(new RoutePair(RequestType.DELETE, route));
         Spark.delete(route, routeClass);
     }
 
+    /**
+     * Adds a PATCH route.
+     *
+     * @param route      The route to add.
+     * @param routeClass The route class to handle the request.
+     */
     public void patch(String route, Route routeClass) {
         routes.add(new RoutePair(RequestType.PATCH, route));
         Spark.patch(route, routeClass);
     }
 
+    /**
+     * Registers a Discord route.
+     *
+     * @param route    The route to register.
+     * @param redirect The redirect URL.
+     * @param handler  Your Discord login handler.
+     * @param dc       The Discord login instance.
+     */
     public void registerDiscordRoute(String route, String redirect, DiscordLoginHandler handler, DiscordLogin dc) {
         Spark.get(route, new Route() {
             @Override
-            public Object handle(spark.Request request, Response response) {
+            public Object handle(Request request, Response response) {
                 User u = null;
                 try {
                     Tokens tokens = dc.auth.getTokens(request.queryParams("code"));
@@ -131,9 +203,7 @@ public class Router {
 
                 response.redirect(redirect);
                 return null;
-
             }
         });
     }
-
 }

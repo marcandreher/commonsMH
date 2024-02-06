@@ -18,7 +18,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class MHRoute implements Route {
+public class FullstackRoute implements Route {
 
     private static final int LOG_STOPWATCH_THRESHOLD = 4;
 
@@ -30,7 +30,7 @@ public class MHRoute implements Route {
     private Request request;
     private Response response;
 
-    public MHRoute(Flogger logger) {
+    public FullstackRoute(Flogger logger) {
         log = logger;
         this.webMap = new ConcurrentHashMap<>();
     }
