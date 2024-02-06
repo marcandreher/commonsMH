@@ -26,6 +26,10 @@ public class JsonProcessingRoute implements Route {
         this.requiredParamters = requiredParamters;
     }
 
+    public void addRequiredParameter(String parameter) {
+        requiredParamters.add(parameter);
+    }
+
     @Override
     public Object handle(Request request, Response response) throws Exception {
         this.request = request;
@@ -37,9 +41,11 @@ public class JsonProcessingRoute implements Route {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         try {
-            for (String parameter : requiredParamters) {
-                if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
-                    return missingParameters(parameter);
+            if (requiredParamters != null) {
+                for (String parameter : requiredParamters) {
+                    if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
+                        return missingParameters(parameter);
+                    }
                 }
             }
         } catch (Exception e) {
