@@ -1,11 +1,15 @@
 package commons.marcandreher.Utils;
 
-import commons.marcandreher.Commons.Flogger;
+import commons.marcandreher.Commons.Flogger.Prefix;
 
 public class DelayedPrint {
 
+    public DelayedPrint(String title, Prefix prefix) {
+        System.out.print(prefix + title + " ");
+    }
+
     public DelayedPrint(String title) {
-        System.out.print(Flogger.Prefix.INFO + title + " ");
+        System.out.print(Prefix.INFO + title + " ");
     }
 
     public void FinishPrint(boolean status) {
