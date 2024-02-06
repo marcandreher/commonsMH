@@ -144,6 +144,20 @@ public class JsonProcessingRoute implements Route {
         return null;
     }
 
+
+    public String customError(String error) {
+        response.status(500);
+        sr = new ServerResponse();
+        sr.setCode(500);
+        sr.setMessage(error);
+        closeDb();
+        try {
+            return objectMapper.writeValueAsString(sr);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void closeDb() {
         mysql.close();
     }
