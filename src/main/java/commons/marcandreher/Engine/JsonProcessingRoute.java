@@ -62,7 +62,7 @@ public class JsonProcessingRoute implements Route {
            return missingParameters(curParameter);
         }
 
-        return this;
+        return null;
     }
 
     public String returnResponse(Object toMap) {
