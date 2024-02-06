@@ -51,5 +51,10 @@ public class Flogger {
         if(level <= logLevel)
         System.out.println(prefix + message);
     }
+
+    public void log(String message, int level) {
+        if(level <= logLevel)
+        System.out.println(message);
+    }
     
 }

@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import commons.marcandreher.Cache.Action.Action;
 import commons.marcandreher.Commons.Flogger;
-import commons.marcandreher.Commons.Flogger.Prefix;
 
 
 
@@ -32,7 +31,7 @@ public class CacheTimer {
 
     public void runUpdate(Flogger logger) {
         System.out.println();
-        logger.log(Prefix.ACTION, "-> Updating actions | " +actionList.size(), 3);
+        logger.log("-> Updating actions | " +actionList.size(), 3);
 
         for(int i = 0; i < actionList.size(); i++) {
             Action ac = actionList.get(i);
