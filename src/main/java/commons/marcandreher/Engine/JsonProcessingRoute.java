@@ -59,6 +59,21 @@ public class JsonProcessingRoute implements Route {
         return null;
     }
 
+    public String notFound(String parameter) {
+        response.status(404);
+        sr = new ServerResponse();
+        sr.setCode(404);
+        sr.setMessage("not found: " + parameter);
+        closeDb();
+        try {
+            return objectMapper.writeValueAsString(sr);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public String expectedType(String parameter, String expectedType) {
         response.status(500);
         sr = new ServerResponse();
