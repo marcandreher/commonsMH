@@ -8,6 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import commons.marcandreher.Commons.Flogger.Prefix;
+import commons.marcandreher.Input.CommandHandler;
+import commons.marcandreher.Input.Commands.Webserver;
 import commons.marcandreher.Utils.Color;
 import freemarker.cache.CacheStorage;
 import freemarker.cache.NullCacheStorage;
@@ -30,6 +32,23 @@ public class WebServer {
 
     private String staticFiles;
     private String templateFiles;
+
+
+    public int getWebPort() {
+        return this.webPort;
+    }
+
+    public void setWebPort(int webPort) {
+        this.webPort = webPort;
+    }
+
+    public String getWebIp() {
+        return this.webIp;
+    }
+
+    public void setWebIp(String webIp) {
+        this.webIp = webIp;
+    }
 
     /**
      * Constructs a WebServer object with the specified logger.
@@ -71,6 +90,13 @@ public class WebServer {
     public void ignite(String webIp, int webPort) throws IOException {
         Spark.port(webPort);
         Spark.ipAddress(webIp);
+        runWebServer();
+    }
+
+    public void ignite(String webIp, int webPort, CommandHandler handler) throws IOException {
+        Spark.port(webPort);
+        Spark.ipAddress(webIp);
+        handler.registerCommand(new Webserver());
         runWebServer();
     }
 
