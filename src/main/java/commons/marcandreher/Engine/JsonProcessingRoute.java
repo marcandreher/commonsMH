@@ -1,5 +1,6 @@
 package commons.marcandreher.Engine;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,10 +32,15 @@ public class JsonProcessingRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         this.request = request;
         this.response = response;
-        mysql = Database.getConnection();
+        try {
+            mysql = Database.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return internalDbError();
+        }
         objectMapper = new ObjectMapper();
 
         response.type("application/json");
@@ -121,6 +127,22 @@ public class JsonProcessingRoute implements Route {
         }
         return null;
     }
+
+    
+    public String internalDbError() {
+        response.status(500);
+        sr = new ServerResponse();
+        sr.setCode(500);
+        sr.setMessage("internal dbError");
+        closeDb();
+        try {
+            return objectMapper.writeValueAsString(sr);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
     public void closeDb() {
