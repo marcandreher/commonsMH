@@ -21,7 +21,7 @@ public class SQL implements Command {
                 System.out.println(Prefix.INFO + "Consize is " + Database.getCurrentConnections());
                 break;
             case "log":
-                if(args.length < 3) {
+                if(args.length <= 2) {
                     System.out.println(Prefix.INFO + getAlias());
                     return;
                 }

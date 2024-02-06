@@ -16,7 +16,6 @@ import freemarker.cache.StrongCacheStorage;
 import freemarker.template.Configuration;
 import spark.Spark;
 
-
 /**
  * The WebServer class represents a web server that can be ignited to serve web
  * content.
@@ -40,7 +39,7 @@ public class WebServer {
     public WebServer(Flogger logger, Database database, short cacheLevel) {
         this.cacheLevel = cacheLevel;
         this.logger = logger;
-        
+
         Logger.getLogger("org").setLevel(Level.OFF);
         Logger.getLogger("akka").setLevel(Level.OFF);
     }
@@ -78,23 +77,22 @@ public class WebServer {
     private void runWebServer() throws IOException {
         logger.log(Prefix.INFO, "MHCommons Webserver ignited on " + Color.GREEN + webIp + ":" + webPort, 1);
 
-        if(staticFiles == null || templateFiles == null) {
-            logger.log(Prefix.ERROR, "Static and template directories not set", 1);
+        if (staticFiles == null || templateFiles == null) {
+            logger.log(Prefix.WARNING, "Static and template directories not set", 1);
             return;
-        }
+        } else {
+            File staticFolder = new File(staticFiles);
+            if (!staticFolder.exists()) {
+                staticFolder.createNewFile();
+            }
+            Spark.externalStaticFileLocation(staticFiles);
 
-        File staticFolder = new File(staticFiles);
-        if (!staticFolder.exists()) {
-            staticFolder.createNewFile();
+            File templateFolder = new File(templateFiles);
+            if (!templateFolder.exists()) {
+                templateFolder.createNewFile();
+            }
+            freemarkerCfg.setDirectoryForTemplateLoading(templateFolder);
         }
-        Spark.externalStaticFileLocation(staticFiles);
-
-        File templateFolder = new File(templateFiles);
-        if (!templateFolder.exists()) {
-            templateFolder.createNewFile();
-        }
-
-        freemarkerCfg.setDirectoryForTemplateLoading(templateFolder);
 
         switch (cacheLevel) {
             case 1:
