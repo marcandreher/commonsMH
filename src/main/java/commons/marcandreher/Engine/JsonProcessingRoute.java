@@ -15,12 +15,12 @@ import spark.Route;
 public class JsonProcessingRoute implements Route {
 
     public MySQL mysql = null;
+    public ObjectMapper objectMapper = null;
+
     private List<String> requiredParamters;
-    private ObjectMapper objectMapper;
     private ServerResponse sr;
-    @SuppressWarnings("unused")
-    private Request request;
-    private Response response;
+    public Request request;
+    public Response response;
 
     public JsonProcessingRoute(List<String> requiredParamters) {
         this.requiredParamters = requiredParamters;
