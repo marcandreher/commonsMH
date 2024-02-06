@@ -1,6 +1,7 @@
 package commons.marcandreher.Engine;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import commons.marcandreher.Commons.Database;
-import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.MySQL;
 import spark.Request;
 import spark.Response;
@@ -24,8 +24,8 @@ public class JsonProcessingRoute implements Route {
     public Request request;
     public Response response;
 
-    public JsonProcessingRoute(List<String> requiredParamters) {
-        this.requiredParamters = requiredParamters;
+    public JsonProcessingRoute() {
+        this.requiredParamters = new ArrayList<String>();
     }
 
     public void addRequiredParameter(String parameter) {
@@ -50,16 +50,14 @@ public class JsonProcessingRoute implements Route {
         String curParameter = null;
 
         try {
-                for (String parameter : requiredParamters) {
-                    Flogger.instance.log(parameter, 0);
-                    curParameter = parameter;
-                    if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
-                        Flogger.instance.log("missing parameter", 0);
-                        return missingParameters(parameter);
-                    }
+            for (String parameter : requiredParamters) {
+                curParameter = parameter;
+                if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
+                    return missingParameters(parameter);
                 }
+            }
         } catch (Exception e) {
-           return missingParameters(curParameter);
+            return missingParameters(curParameter);
         }
 
         return null;
@@ -132,7 +130,6 @@ public class JsonProcessingRoute implements Route {
         return null;
     }
 
-    
     public String internalDbError() {
         response.status(500);
         sr = new ServerResponse();
@@ -146,8 +143,6 @@ public class JsonProcessingRoute implements Route {
         }
         return null;
     }
-
-
 
     public void closeDb() {
         mysql.close();
