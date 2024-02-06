@@ -4,15 +4,14 @@ import commons.marcandreher.Utils.Color;
 
 public class Flogger {
     public enum Prefix {
-        INFO(Color.CYAN + "[INFO]: " + Color.RESET), // INFO prefix
-        ERROR(Color.RED + "[ERROR]: " + Color.RESET), // ERROR prefix
-        IMPORTANT(Color.RED + "[IMPORTANT]: " + Color.RED), // IMPORTANT prefix
-        WARNING(Color.YELLOW + "[WARNING]: " + Color.RESET), // WARNING prefix
-        MYSQL(Color.BLUE + "[MYSQL]: " + Color.RESET), // MYSQL prefix
-        VOTE(Color.BLUE + "[VOTE] " + Color.RESET), // VOTE prefix
-        INPUT(Color.MAGENTA + "[INPUT]: " + Color.RESET), // INPUT prefix
-        OPENID(Color.GREEN + "[OPENID]: " + Color.RESET),
-        CRAWLER(Color.GREEN + "[CRAWLER] " + Color.RESET); // CRAWLER prefix
+        INFO(Color.CYAN + "[Info] " + Color.RESET), // INFO prefix
+        ERROR(Color.RED + "[ERROR] " + Color.RESET), // ERROR prefix
+        IMPORTANT(Color.RED + "[IMPORTANT] " + Color.RED), // IMPORTANT prefix
+        WARNING(Color.YELLOW + "[WARNING] " + Color.RESET), // WARNING prefix
+        MYSQL(Color.BLUE + "[MySQL] " + Color.RESET), // MYSQL prefix
+        INPUT(Color.MAGENTA + "[Input] " + Color.RESET), // INPUT prefix
+        OPENID(Color.GREEN + "[OpenID] " + Color.RESET),
+        ACTION(Color.GREEN + "[Action] " + Color.RESET); // CRAWLER prefix
     
         private final String code;
     

@@ -32,7 +32,7 @@ public class CacheTimer {
 
     public void runUpdate(Flogger logger) {
         System.out.println();
-        logger.log(Prefix.INFO, "-> Updating actions | " +actionList.size(), 3);
+        logger.log(Prefix.ACTION, "-> Updating actions | " +actionList.size(), 3);
 
         for(int i = 0; i < actionList.size(); i++) {
             Action ac = actionList.get(i);
