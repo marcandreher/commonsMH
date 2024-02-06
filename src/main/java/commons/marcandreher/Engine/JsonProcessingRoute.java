@@ -37,29 +37,20 @@ public class JsonProcessingRoute implements Route {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         try {
-            
-        for (String parameter : requiredParamters) {
-            try {
+            for (String parameter : requiredParamters) {
                 if (request.queryParams(parameter) == null || request.queryParams(parameter).isEmpty()) {
                     return missingParameters(parameter);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return missingParameters(parameter);
             }
-           
-        }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         return this;
     }
 
     public String returnResponse(Object toMap) {
         response.status(200);
-       
         closeDb();
         try {
             return objectMapper.writeValueAsString(toMap);
@@ -97,12 +88,11 @@ public class JsonProcessingRoute implements Route {
         return null;
     }
 
-
     public String expectedType(String parameter, String expectedType) {
         response.status(500);
         sr = new ServerResponse();
         sr.setCode(500);
-        sr.setMessage("parameter: " + parameter+":expectedType: "+expectedType);
+        sr.setMessage("parameter: " + parameter + ":expectedType: " + expectedType);
         closeDb();
         try {
             return objectMapper.writeValueAsString(sr);
@@ -112,7 +102,6 @@ public class JsonProcessingRoute implements Route {
         return null;
     }
 
-    
     public String internalError() {
         response.status(500);
         sr = new ServerResponse();
