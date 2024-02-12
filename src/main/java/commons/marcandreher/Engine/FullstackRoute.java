@@ -22,10 +22,10 @@ public class FullstackRoute implements Route {
 
     private static final int LOG_STOPWATCH_THRESHOLD = 4;
 
-    private Map<String, Object> webMap;
+    public Map<String, Object> webMap;
     private Stopwatch stopWatch;
-    private MySQL mysql;
-    private Flogger log;
+    public MySQL mysql;
+    public Flogger log;
 
     private Request request;
     private Response response;
