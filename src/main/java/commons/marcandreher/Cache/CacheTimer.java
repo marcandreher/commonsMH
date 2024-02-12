@@ -6,11 +6,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import commons.marcandreher.Cache.Action.Action;
+import commons.marcandreher.Cache.Action.DatabaseAction;
 import commons.marcandreher.Commons.Flogger;
-
-
-
-
 
 public class CacheTimer {
 
@@ -36,6 +33,11 @@ public class CacheTimer {
         for(int i = 0; i < actionList.size(); i++) {
             Action ac = actionList.get(i);
             ac.executeAction(logger);
+
+            if(ac instanceof DatabaseAction) {
+                DatabaseAction acdb = (DatabaseAction) ac;
+                acdb.mysql.close();
+            }
         }
     }
     
