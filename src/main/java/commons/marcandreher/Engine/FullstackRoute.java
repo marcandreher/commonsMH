@@ -47,9 +47,7 @@ public class FullstackRoute implements Route {
         try {
             this.mysql = Database.getConnection();
         } catch (SQLException e) {
-            log.log(Flogger.Prefix.ERROR, "Failed to get a connection", 0);
-            this.mysql.close();
-            return handle(request, response);
+            e.printStackTrace();
         }
         
         if (this.log.getLogLevel() >= LOG_STOPWATCH_THRESHOLD) {
@@ -100,7 +98,7 @@ public class FullstackRoute implements Route {
         } finally {
             this.mysql.close();
         }
-        
+
         // Redirect to error page
         return null;
     }
