@@ -30,13 +30,13 @@ public class FullstackRoute implements Route {
     private Request request;
     private Response response;
 
-    public FullstackRoute(Flogger logger) {
-        log = logger;
+    public FullstackRoute() {
         this.webMap = new ConcurrentHashMap<>();
     }
 
     @Override
     public Object handle(Request request, Response response) {
+        log = Flogger.instance;
         this.request = request;
         this.response = response;
         this.stopWatch = new Stopwatch();
