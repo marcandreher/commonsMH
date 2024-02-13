@@ -140,19 +140,20 @@ public class Database {
         hikariConfig.setUsername(user);
         hikariConfig.setPassword(password);
 
-        dataSource = new HikariDataSource(hikariConfig);
+            dataSource = new HikariDataSource(hikariConfig);
 
-        try (Connection connection = dataSource.getConnection()) {
-            Flogger.instance.log(Prefix.INFO, "Connected to Database ", 0);
-        } catch (SQLException e) {
-            Flogger.instance.log(Prefix.ERROR, "Error while connecting to MySQL database " + e.getMessage(), 0);
+            try (Connection connection = dataSource.getConnection()) {
+                Flogger.instance.log(Prefix.INFO, "Connected to Database ", 0);
+                connection.close();
+            } catch (SQLException e) {
+                Flogger.instance.log(Prefix.ERROR, "Error while connecting to MySQL database " + e.getMessage(), 0);
+            }
         }
-    }
 
-    /**
-     * Closes the connection to the MySQL database.
-     */
-    public void closeConnection() {
+        /**
+         * Closes the connection to the MySQL database.
+         */
+        public void closeConnection() {
         if (dataSource != null && !dataSource.isClosed()) {
             currentConnections--;
             dataSource.close();

@@ -1,5 +1,6 @@
 package commons.marcandreher.Engine;
 
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -12,6 +13,7 @@ import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.MySQL;
 import commons.marcandreher.Commons.WebServer;
+import commons.marcandreher.Utils.Color;
 import commons.marcandreher.Utils.Stopwatch;
 import freemarker.template.Template;
 import spark.Request;
@@ -45,6 +47,7 @@ public class FullstackRoute implements Route {
         try {
             this.mysql = Database.getConnection();
         } catch (SQLException e) {
+            log.log(Flogger.Prefix.ERROR, "Failed to get a connection", 0);
             this.mysql.close();
             return handle(request, response);
         }
@@ -88,13 +91,16 @@ public class FullstackRoute implements Route {
             }
 
         } catch (IOException e) {
+            log.log(Flogger.Prefix.ERROR, "Error loading template: " + Color.GREEN + location + Color.RESET, 0);
             throw new RuntimeException("Error loading template: " + location, e);
+           
         } catch (Exception e) {
-            System.out.println("Error rendering template");
+            log.log(Flogger.Prefix.ERROR, "Error loading template: " + Color.GREEN + location + Color.RESET, 0);
             response.status(500);
         } finally {
             this.mysql.close();
         }
+        
         // Redirect to error page
         return null;
     }
