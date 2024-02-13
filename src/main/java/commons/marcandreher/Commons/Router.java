@@ -6,6 +6,7 @@ import java.util.Set;
 import commons.marcandreher.Auth.DiscordLogin;
 import commons.marcandreher.Auth.DiscordLoginHandler;
 import commons.marcandreher.Commons.Flogger.Prefix;
+import commons.marcandreher.Engine.FullstackRoute;
 import commons.marcandreher.Engine.UploadHandler;
 import commons.marcandreher.Utils.RequestType;
 import dev.coly.discordoauth2.DiscordAPI;
@@ -186,9 +187,10 @@ public class Router {
      * @param dc       The Discord login instance.
      */
     public void registerDiscordRoute(String route, String redirect, DiscordLoginHandler handler, DiscordLogin dc) {
-        Spark.get(route, new Route() {
+        Spark.get(route, new FullstackRoute() {
             @Override
             public Object handle(Request request, Response response) {
+                super.handle(request, response);
                 User u = null;
                 try {
                     Tokens tokens = dc.auth.getTokens(request.queryParams("code"));
@@ -199,7 +201,7 @@ public class Router {
                     return null;
                 }
 
-                handler.handleDiscordLogin(u, request, response);
+                handler.handleDiscordLogin(u, request, response, mysql);
 
                 response.redirect(redirect);
                 return null;
