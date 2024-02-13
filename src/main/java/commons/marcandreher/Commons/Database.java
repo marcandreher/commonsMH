@@ -1,9 +1,12 @@
 package commons.marcandreher.Commons;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import commons.marcandreher.Commons.Flogger.Prefix;
 
 public class Database {
     private HikariConfig hikariConfig;
@@ -138,6 +141,12 @@ public class Database {
         hikariConfig.setPassword(password);
 
         dataSource = new HikariDataSource(hikariConfig);
+
+        try (Connection connection = dataSource.getConnection()) {
+            Flogger.instance.log(Prefix.INFO, "Connected to Database ", 0);
+        } catch (SQLException e) {
+            Flogger.instance.log(Prefix.ERROR, "Error while connecting to MySQL database " + e.getMessage(), 0);
+        }
     }
 
     /**
