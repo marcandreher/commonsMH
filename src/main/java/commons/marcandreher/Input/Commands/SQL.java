@@ -26,7 +26,7 @@ public class SQL implements Command {
                     System.out.println(Prefix.INFO + getAlias());
                     return;
                 }
-                short level = Short.parseShort(args[2]);
+                int level = Integer.parseInt(args[2]);
                 MySQL.LOGLEVEL = level;
                 System.out.println(Prefix.INFO + "Log level set to " + level);
                 break;
