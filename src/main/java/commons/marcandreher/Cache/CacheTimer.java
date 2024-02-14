@@ -30,7 +30,6 @@ public class CacheTimer {
     }
 
     public void runUpdate(Flogger logger) {
-        System.out.println();
         logger.log("  -> Updating actions | " + Color.GREEN +actionList.size() + " running again in " + period+"m" + Color.RESET, 3);
 
         for(int i = 0; i < actionList.size(); i++) {

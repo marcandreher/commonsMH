@@ -2,6 +2,7 @@ package commons.marcandreher.Input.Commands;
 
 import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
+import commons.marcandreher.Commons.MySQL;
 import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Input.Command;
 import commons.marcandreher.Utils.Color;
@@ -26,7 +27,7 @@ public class SQL implements Command {
                     return;
                 }
                 short level = Short.parseShort(args[2]);
-                logger.setLogLevel(level);
+                MySQL.LOGLEVEL = 0;
                 System.out.println(Prefix.INFO + "Log level set to " + level);
                 break;
             default:

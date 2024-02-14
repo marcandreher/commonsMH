@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
+import commons.marcandreher.Commons.Flogger.Prefix;
+
 public final class MySQL {
+
+	public static int LOGLEVEL = 3;
 	
 	private Connection currentCon;
 
@@ -19,7 +23,7 @@ public final class MySQL {
 			PreparedStatement stmt = currentCon.prepareStatement(sql);
 			for (int i = 0; i < args.length; i++)
 				stmt.setString(i + 1, args[i]);
-
+				Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
 			return stmt.executeQuery();
 		} catch (Exception ex) {
 
@@ -32,7 +36,7 @@ public final class MySQL {
 			PreparedStatement stmt = currentCon.prepareStatement(sql);
 			for (int i = 0; i < args.size(); i++)
 				stmt.setString(i + 1, args.get(i));
-
+				Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
 			return stmt.executeQuery();
 		} catch (Exception ex) {
 
@@ -48,6 +52,7 @@ public final class MySQL {
 	
 	        stmt.execute();
 	        ResultSet rs = stmt.getGeneratedKeys();
+			Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
 	        if (rs.next()) {
 	            return rs.getInt(1);
 	        } else {
