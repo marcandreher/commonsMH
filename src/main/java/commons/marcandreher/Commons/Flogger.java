@@ -52,11 +52,13 @@ public class Flogger {
      */
     public void log(Prefix prefix, String message, int level) {
         if(level <= logLevel)
+        System.out.println(level + "<=" + logLevel);
         System.out.println(prefix + message);
     }
 
     public void log(String message, int level) {
         if(level <= logLevel)
+        System.out.println(level + "<=" + logLevel);
         System.out.println(message);
     }
     
