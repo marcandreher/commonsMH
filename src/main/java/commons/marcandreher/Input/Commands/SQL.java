@@ -27,7 +27,7 @@ public class SQL implements Command {
                     return;
                 }
                 short level = Short.parseShort(args[2]);
-                MySQL.LOGLEVEL = 0;
+                MySQL.LOGLEVEL = level;
                 System.out.println(Prefix.INFO + "Log level set to " + level);
                 break;
             default:
