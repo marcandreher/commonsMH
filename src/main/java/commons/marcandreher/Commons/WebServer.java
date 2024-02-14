@@ -112,7 +112,7 @@ public class WebServer {
     }
 
     private void runWebServer() throws IOException {
-        logger.log(Prefix.INFO, "MHCommons Webserver ignited on " + Color.GREEN + webIp + ":" + webPort, 1);
+        logger.log(Prefix.INFO, "MHCommons Webserver ignited on " + Color.GREEN + webIp + ":" + webPort + Color.RESET, 1);
 
         if (staticFiles == null || templateFiles == null) {
             logger.log(Prefix.WARNING, "Static and template directories not set", 1);

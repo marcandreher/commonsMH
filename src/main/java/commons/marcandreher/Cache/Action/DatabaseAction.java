@@ -19,7 +19,7 @@ public class DatabaseAction implements Action {
         try {
             mysql = Database.getConnection();
         } catch (Exception e) {
-            logger.log(Prefix.ERROR, "-> Failed to start DatabaseAction " + Color.RED + this.toString(), 0);
+            logger.log(Prefix.ERROR, "-> Failed to start DatabaseAction " + Color.RED + this.toString() + Color.RESET, 0);
         }
 
     }

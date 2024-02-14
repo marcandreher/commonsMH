@@ -33,7 +33,7 @@ public class CommandHandler extends Thread {
             String input = System.console().readLine();
 
             // Split input into command and arguments
-            String[] argsCmd = input.split(" ", 2);
+            String[] argsCmd = input.split(" ");
 
             Boolean foundCmd = false;
             for (Command cmd : initializedCommands) {
