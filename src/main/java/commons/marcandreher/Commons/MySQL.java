@@ -10,7 +10,7 @@ import commons.marcandreher.Commons.Flogger.Prefix;
 
 public final class MySQL {
 
-	public static int LOGLEVEL = 3;
+	public static int LOGLEVEL = 4;
 	
 	private Connection currentCon;
 

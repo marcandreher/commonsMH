@@ -151,7 +151,7 @@ public class WebServer {
 
         Spark.before((req, res) -> {
             logger.log(Prefix.INFO, "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    + "] " + req.ip() + " | " + req.url() + " | " + req.userAgent(), 2);
+                    + "] " + req.ip() + " | " + req.url() + " | " + req.userAgent(), 3);
         });
 
         Spark.awaitInitialization();

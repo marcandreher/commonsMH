@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
+import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 public class SitemapGenerator {
 
@@ -17,6 +18,10 @@ public class SitemapGenerator {
 
     public void addUrl(String url) {
         wsg.addUrl(domain + url);
+    }
+
+    public void addSitemapUrl(WebSitemapUrl url) {
+        wsg.addUrl(url);
     }
 
     public void write() {
