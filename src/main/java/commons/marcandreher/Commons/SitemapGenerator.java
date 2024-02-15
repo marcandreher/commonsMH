@@ -8,6 +8,8 @@ import java.util.Calendar;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.GoogleCodeSitemapUrl.Options;
 
+import commons.marcandreher.Commons.Flogger.Prefix;
+
 public class SitemapGenerator {
 
     private WebSitemapGenerator wsg = null;
@@ -30,8 +32,8 @@ public class SitemapGenerator {
             cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
             options.lastMod(cal.getTime());
             wsg.addUrl(options.build());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Flogger.instance.log(Prefix.ERROR, e.getMessage(), 0);
         }
     }
 
