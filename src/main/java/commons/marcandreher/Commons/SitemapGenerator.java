@@ -29,6 +29,7 @@ public class SitemapGenerator {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
             options.lastMod(cal.getTime());
+            wsg.addUrl(options.build());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
