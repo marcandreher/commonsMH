@@ -32,6 +32,7 @@ public class SitemapGenerator {
             cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
             options.lastMod(cal.getTime());
             wsg.addUrl(options.build());
+            Flogger.instance.log(Prefix.INFO, "added " +url, 0);
         } catch (Exception e) {
             Flogger.instance.log(Prefix.ERROR, e.getMessage(), 0);
         }
