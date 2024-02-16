@@ -191,6 +191,7 @@ public class Router {
             @Override
             public Object handle(Request request, Response response) {
                 super.handle(request, response);
+                logger.log(Prefix.INFO, "Discord login requested", 3);
                 User u = null;
                 try {
                     Tokens tokens = dc.auth.getTokens(request.queryParams("code"));
@@ -201,6 +202,7 @@ public class Router {
                     return null;
                 }
 
+                logger.log(Prefix.INFO, "Discord Handler called", 3);
                 handler.handleDiscordLogin(u, request, response, mysql);
 
                 response.redirect(redirect);
