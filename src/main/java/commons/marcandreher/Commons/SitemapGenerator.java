@@ -26,7 +26,6 @@ public class SitemapGenerator {
 
     public void addSitemapUrl(double priority, String url) {
         try {
-            @SuppressWarnings("deprecation")
             Options options = new Options(new URL(domain + url), "xml");
             options.priority(priority);
             Calendar cal = Calendar.getInstance();

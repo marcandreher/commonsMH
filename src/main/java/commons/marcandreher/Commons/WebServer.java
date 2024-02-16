@@ -29,6 +29,7 @@ public class WebServer {
     private short cacheLevel;
     private String webIp = "127.0.0.1";
     private Flogger logger;
+    private Prefix prefix = Prefix.INFO;
 
     private String staticFiles;
     private String templateFiles;
@@ -50,6 +51,14 @@ public class WebServer {
     public void setWebIp(String webIp) {
         Spark.ipAddress(webIp);
         this.webIp = webIp;
+    }
+
+    public void setPrefix(Prefix prefix) {
+        this.prefix = prefix;
+    }
+
+    public Prefix getPrefix() {
+        return this.prefix;
     }
 
     /**
@@ -149,8 +158,8 @@ public class WebServer {
                 break;
         }
 
-        Spark.before((req, res) -> {
-            logger.log(Prefix.INFO, "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        Spark.before("*", (req, res) -> {
+            logger.log(prefix, "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                     + "] " + req.ip() + " | " + req.url() + " | " + req.userAgent(), 3);
         });
 
