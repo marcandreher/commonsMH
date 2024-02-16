@@ -26,13 +26,13 @@ public class SitemapGenerator {
 
     public void addSitemapUrl(double priority, String url) {
         try {
+            @SuppressWarnings("deprecation")
             Options options = new Options(new URL(domain + url), "xml");
             options.priority(priority);
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
             options.lastMod(cal.getTime());
             wsg.addUrl(options.build());
-            Flogger.instance.log(Prefix.INFO, "added " +url, 0);
         } catch (Exception e) {
             Flogger.instance.log(Prefix.ERROR, e.getMessage(), 0);
         }
