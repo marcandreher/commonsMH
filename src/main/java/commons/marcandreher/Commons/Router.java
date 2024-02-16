@@ -10,7 +10,7 @@ import commons.marcandreher.Engine.FullstackRoute;
 import commons.marcandreher.Engine.UploadHandler;
 import commons.marcandreher.Utils.RequestType;
 import dev.coly.discordoauth2.DiscordAPI;
-import dev.coly.discordoauth2.objects.Tokens;
+import dev.coly.discordoauth2.DiscordOAuth2;
 import dev.coly.discordoauth2.objects.User;
 import spark.Request;
 import spark.Response;
@@ -186,27 +186,26 @@ public class Router {
      * @param handler  Your Discord login handler.
      * @param dc       The Discord login instance.
      */
-    public void registerDiscordRoute(String route, String redirect, DiscordLoginHandler handler, DiscordLogin dc) {
+    public void registerDiscordRoute(String route, DiscordLoginHandler handler, DiscordLogin dc) {
+        DiscordOAuth2 dcauth2 = dc.auth;
+
+
         Spark.get(route, new FullstackRoute() {
             @Override
             public Object handle(Request request, Response response) {
                 super.handle(request, response);
-                logger.log(Prefix.INFO, "Discord login requested", 3);
-                User u = null;
+                logger.log(Prefix.INFO, "Discord login requested", 2);
+                
                 try {
-                    Tokens tokens = dc.auth.getTokens(request.queryParams("code"));
-                    u = DiscordAPI.getUser(tokens.getAccessToken());
-                    logger.log(Prefix.INFO, "-> Discord Login", 3);
+                    logger.log(Prefix.INFO, "-> Discord Login", 2);
+                    User u = DiscordAPI.getUser(dcauth2.getTokens(request.queryParams("code")).getAccessToken());
+                    logger.log(Prefix.INFO, "Discord Handler called", 2);
+                    return handler.handleDiscordLogin(u, request, response, mysql);
+                    
                 } catch (Exception e) {
-                    logger.log(Prefix.ERROR, "Discord login failed", 0);
+                    logger.log(Prefix.ERROR, "Discord login failed " + e.getMessage(), 0);
                     return null;
                 }
-
-                logger.log(Prefix.INFO, "Discord Handler called", 3);
-                handler.handleDiscordLogin(u, request, response, mysql);
-
-                response.redirect(redirect);
-                return null;
             }
         });
     }

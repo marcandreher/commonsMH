@@ -8,6 +8,6 @@ import spark.Response;
 
 public interface DiscordLoginHandler {
 
-    public void handleDiscordLogin(User u, Request request, Response response, MySQL mysql);
+    public String handleDiscordLogin(User u, Request request, Response response, MySQL mysql);
     
 }
