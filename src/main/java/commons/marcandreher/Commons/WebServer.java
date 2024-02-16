@@ -125,7 +125,7 @@ public class WebServer {
 
         if (staticFiles == null || templateFiles == null) {
             logger.log(Prefix.WARNING, "Static and template directories not set", 1);
-            return;
+           
         } else {
             File staticFolder = new File(staticFiles);
             if (!staticFolder.exists()) {
@@ -138,27 +138,27 @@ public class WebServer {
                 templateFolder.createNewFile();
             }
             freemarkerCfg.setDirectoryForTemplateLoading(templateFolder);
+
+            switch (cacheLevel) {
+                case 1:
+                    freemarkerCfg.setCacheStorage(NullCacheStorage.INSTANCE);
+                    freemarkerCfg.setTemplateUpdateDelayMilliseconds(1);
+                    break;
+                case 2:
+                    CacheStorage level2CacheStorage = new SoftCacheStorage();
+                    freemarkerCfg.setCacheStorage(level2CacheStorage);
+                    freemarkerCfg.setTemplateUpdateDelayMilliseconds(500);
+                    break;
+                case 3:
+                    CacheStorage level3CacheStorage = new StrongCacheStorage();
+    
+                    freemarkerCfg.setCacheStorage(level3CacheStorage);
+                    freemarkerCfg.setTemplateUpdateDelayMilliseconds(1000);
+                    break;
+            }
         }
 
-        switch (cacheLevel) {
-            case 1:
-                freemarkerCfg.setCacheStorage(NullCacheStorage.INSTANCE);
-                freemarkerCfg.setTemplateUpdateDelayMilliseconds(1);
-                break;
-            case 2:
-                CacheStorage level2CacheStorage = new SoftCacheStorage();
-                freemarkerCfg.setCacheStorage(level2CacheStorage);
-                freemarkerCfg.setTemplateUpdateDelayMilliseconds(500);
-                break;
-            case 3:
-                CacheStorage level3CacheStorage = new StrongCacheStorage();
-
-                freemarkerCfg.setCacheStorage(level3CacheStorage);
-                freemarkerCfg.setTemplateUpdateDelayMilliseconds(1000);
-                break;
-        }
-
-        Spark.before("*", (req, res) -> {
+        Spark.before((req, res) -> {
             logger.log(prefix, "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                     + "] " + req.ip() + " | " + req.url() + " | " + req.userAgent(), 2);
         });
