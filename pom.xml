@@ -16,10 +16,10 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>16</maven.compiler.source>
-    <maven.compiler.target>16</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <jackson.version>2.14.2</jackson.version>
-    <java.version>16</java.version>
+    <java.version>21</java.version>
   </properties>
 
   <repositories>
@@ -151,8 +151,8 @@
         <configuration>
           <encoding>UTF-8</encoding>
           <fork>true</fork>
-          <source>16</source>
-          <target>16</target>
+          <source>21</source>
+          <target>21</target>
         </configuration>
       </plugin>
 
