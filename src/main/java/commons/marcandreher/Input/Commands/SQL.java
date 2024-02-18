@@ -19,7 +19,7 @@ public class SQL implements Command {
 
         switch(args[1]) {
             case "consize":
-                System.out.println(Prefix.INFO + "Consize is " + Database.getCurrentConnections());
+                System.out.println(Prefix.INFO + "Consize is " + Database.currentConnections);
                 break;
             case "log":
                 if(args.length <= 2) {

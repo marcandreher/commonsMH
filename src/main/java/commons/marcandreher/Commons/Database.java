@@ -15,23 +15,7 @@ public class Database {
     private int maximumPoolSize;
     public static int currentConnections;
 
-    /**
-     * Get the current number of connections in the pool.
-     *
-     * @return The current number of connections in the pool.
-     */
-    public static int getCurrentConnections() {
-        return currentConnections;
-    }
 
-    /**
-     * Get the connection timeout value.
-     *
-     * @return The connection timeout value in milliseconds.
-     */
-    public int getConnectionTimeout() {
-        return this.connectionTimeout;
-    }
 
     /**
      * Set the connection timeout value.
@@ -40,7 +24,7 @@ public class Database {
      */
     public void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
-        hikariConfig.setConnectionTimeout(1000);
+        hikariConfig.setConnectionTimeout(this.connectionTimeout);
     }
 
     /**
@@ -169,7 +153,7 @@ public class Database {
         MySQL connection = null;
         try {
             connection = new MySQL(dataSource.getConnection());
-            currentConnections++;
+            Database.currentConnections++;
             return connection;
         } catch (SQLException e) {
             throw new SQLException("Error while obtaining a connection from the pool.", e);
