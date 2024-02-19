@@ -11,11 +11,11 @@ import commons.marcandreher.Commons.Flogger.Prefix;
 public final class MySQL {
 
 	public static int LOGLEVEL = 4;
-	
+
 	private Connection currentCon;
 
 	public MySQL(Connection currentCon) {
-		
+
 		this.currentCon = currentCon;
 	}
 
@@ -24,7 +24,7 @@ public final class MySQL {
 			PreparedStatement stmt = currentCon.prepareStatement(sql);
 			for (int i = 0; i < args.length; i++)
 				stmt.setString(i + 1, args[i]);
-				Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
+			Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
 			return stmt.executeQuery();
 		} catch (Exception ex) {
 
@@ -37,7 +37,7 @@ public final class MySQL {
 			PreparedStatement stmt = currentCon.prepareStatement(sql);
 			for (int i = 0; i < args.size(); i++)
 				stmt.setString(i + 1, args.get(i));
-				Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
+			Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
 			return stmt.executeQuery();
 		} catch (Exception ex) {
 
@@ -46,32 +46,35 @@ public final class MySQL {
 	}
 
 	public int Exec(String sql, String... args) {
-	    try {
-	        PreparedStatement stmt = currentCon.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        for (int i = 0; i < args.length; i++)
-	            stmt.setString(i + 1, args[i]);
-	
-	        stmt.execute();
-	        ResultSet rs = stmt.getGeneratedKeys();
+		try {
+			PreparedStatement stmt = currentCon.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			for (int i = 0; i < args.length; i++)
+				stmt.setString(i + 1, args[i]);
+
+			stmt.execute();
+			ResultSet rs = stmt.getGeneratedKeys();
 			Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
-	        if (rs.next()) {
-	            return rs.getInt(1);
-	        } else {
-	            return 0;
-	        }
-	    } catch (Exception ex) {
-	  
-	        return -1;
-	    }
+			if (rs.next()) {
+				return rs.getInt(1);
+			} else {
+				return 0;
+			}
+		} catch (Exception ex) {
+
+			return -1;
+		}
 	}
 
 	public void close() {
-
 		try {
-			Database.currentConnections--;
-			currentCon.close();
+			if (!currentCon.isClosed()) {
+				Database.currentConnections--;
+				currentCon.close();
+			}
 		} catch (Exception ex) {
+			Flogger.instance.log(Prefix.ERROR, "Failed to close connection", 0);
 		}
+
 	}
 
 }
