@@ -78,6 +78,17 @@ public class FullstackRoute implements Route {
         this.webMap.put("titleBar", title);
     }
 
+    public Object redirect(String location) {
+        response.redirect(location);
+        mysql.close();
+        return null;
+    }
+
+    public Object notFound() {
+        mysql.close();
+        return null;
+    }
+
     public String renderTemplate(String location) {
         try {
             Template templateFree = WebServer.freemarkerCfg.getTemplate(location);
