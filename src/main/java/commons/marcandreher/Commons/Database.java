@@ -133,16 +133,7 @@ public class Database {
                 Flogger.instance.log(Prefix.ERROR, "Error while connecting to MySQL database " + e.getMessage(), 0);
             }
         }
-
-        /**
-         * Closes the connection to the MySQL database.
-         */
-        public void closeConnection() {
-        if (dataSource != null && !dataSource.isClosed()) {
-            currentConnections--;
-            dataSource.close();
-        }
-    }
+    
     
     /**
      * Get a connection to the MySQL database.
