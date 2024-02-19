@@ -6,7 +6,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import commons.marcandreher.Cache.Action.Action;
+import commons.marcandreher.Cache.Action.DatabaseAction;
 import commons.marcandreher.Commons.Flogger;
+import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Utils.Color;
 
 public class CacheTimer {
@@ -35,6 +37,11 @@ public class CacheTimer {
             Action ac = actionList.get(i);
             ac.executeAction(logger);
 
+            if (ac instanceof DatabaseAction) {
+                DatabaseAction acdb = (DatabaseAction) ac;
+                acdb.mysql.close();
+                logger.log(Prefix.INFO, "Closes connection of Action(" + i + ")", 3);
+            }
         }
     }
     
