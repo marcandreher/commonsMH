@@ -15,7 +15,7 @@ public final class MySQL {
 	private Connection currentCon;
 
 	public MySQL(Connection currentCon) {
-		Database.currentConnections++;
+		
 		this.currentCon = currentCon;
 	}
 

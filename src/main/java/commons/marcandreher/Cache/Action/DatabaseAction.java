@@ -10,9 +10,6 @@ public class DatabaseAction implements Action {
 
     public MySQL mysql;
 
-    public void closeDb() {
-        mysql.close();
-    }
 
     @Override
     public void executeAction(Flogger logger)  {
@@ -24,8 +21,5 @@ public class DatabaseAction implements Action {
 
     }
 
-    public void closeConnection() {
-        mysql.close();
-    }
     
 }

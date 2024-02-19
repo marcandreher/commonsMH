@@ -39,7 +39,7 @@ public class CacheTimer {
 
             if (ac instanceof DatabaseAction) {
                 DatabaseAction acdb = (DatabaseAction) ac;
-                acdb.closeConnection();
+                acdb.mysql.close();
                 logger.log(Prefix.INFO, "Closes connection of Action(" + i + ")", 3);
             }
         }
