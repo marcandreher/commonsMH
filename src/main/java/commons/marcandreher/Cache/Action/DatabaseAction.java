@@ -23,5 +23,9 @@ public class DatabaseAction implements Action {
         }
 
     }
+
+    public void closeConnection() {
+        mysql.close();
+    }
     
 }
