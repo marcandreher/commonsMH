@@ -29,6 +29,8 @@ public class FullstackRoute implements Route {
     public MySQL mysql;
     public Flogger log;
 
+    private Meta meta = null;
+
     private Request request;
     private Response response;
 
@@ -78,6 +80,10 @@ public class FullstackRoute implements Route {
         this.webMap.put("titleBar", title);
     }
 
+    public void setMeta(Meta meta) {
+        this.meta = meta;
+    } 
+
     public Object redirect(String location) {
         response.redirect(location);
         mysql.close();
@@ -92,7 +98,9 @@ public class FullstackRoute implements Route {
     public String renderTemplate(String location) {
         try {
             Template templateFree = WebServer.freemarkerCfg.getTemplate(location);
-
+            if(this.meta != null) {
+                this.webMap.put("meta", this.meta);
+            }
             try (Writer out = new StringWriter()) {
                 this.mysql.close();
                 templateFree.process(this.webMap, out);
