@@ -101,8 +101,9 @@ public class Flogger {
                 if (!Files.exists(filePath)) {
                     Files.createFile(filePath);
                 }
-
-                String text = message.replaceAll("\\d{1,2}(;\\d{1,2})?", "");
+                String text = "";
+                if(prefix != null) message += prefix.name();
+                text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replaceAll("", "\n").replaceAll("[m", "");
 
                 try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
                         StandardOpenOption.APPEND)) {
