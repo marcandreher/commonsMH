@@ -91,22 +91,23 @@ public class Flogger {
         }
 
         if (instanceName != null) {
-            String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
-            Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
-
-            String text = "";
-            if (prefix != null) text += prefix.name() + " ";
-            text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
-            if (text.contains("")) {
-                text = text.replace("", "\n");
-            } else {
-                text += "\n";
-            }
-
-            logQueue.offer(text); // Enqueue log message
-
+           
             if (!executor.isShutdown()) {
                 executor.execute(() -> {
+                    String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
+                    Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
+        
+                    String text = "";
+                    if (prefix != null) text += prefix.name() + " ";
+                    text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
+                    if (text.contains("")) {
+                        text = text.replace("", "\n");
+                    } else {
+                        text += "\n";
+                    }
+        
+                    logQueue.offer(text); // Enqueue log message
+        
                     try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
                             StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
                         String log;
