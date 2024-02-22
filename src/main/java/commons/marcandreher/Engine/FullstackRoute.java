@@ -84,6 +84,10 @@ public class FullstackRoute implements Route {
         this.meta = meta;
     } 
 
+    public Meta getMeta() {
+        return meta;
+    }
+
     public Object redirect(String location) {
         response.redirect(location);
         mysql.close();
