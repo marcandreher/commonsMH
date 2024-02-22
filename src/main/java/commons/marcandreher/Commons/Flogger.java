@@ -9,6 +9,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import commons.marcandreher.Utils.Color;
 
@@ -20,9 +24,10 @@ public class Flogger {
     private int logLevel;
     public static Flogger instance;
 
-    private Path folderPath = Paths.get(FOLDER_LOCATION);
-    
+    private Queue<String> logQueue = new ConcurrentLinkedQueue<>();
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
+    
     public enum Prefix {
         INFO(Color.CYAN + "[Info] " + Color.RESET), // INFO prefix
         ERROR(Color.RED + "[ERROR] " + Color.RESET), // ERROR prefix
@@ -46,6 +51,7 @@ public class Flogger {
         }
     }
 
+
     public void setInstanceName(String name) {
         this.instanceName = name;
     }
@@ -67,13 +73,6 @@ public class Flogger {
         this.logLevel = logLevel;
     }
 
-    /**
-     * Logs a message with the specified prefix and level.
-     * 
-     * @param prefix  the prefix to be added to the log message
-     * @param message the log message
-     * @param level   the level of the log message
-     */
     public void log(Prefix prefix, String message, int level) {
         if (level <= logLevel)
             handleLog(prefix, message);
@@ -95,33 +94,34 @@ public class Flogger {
             String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
             Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
 
-            try {
-                if (!Files.exists(folderPath)) {
-                    Files.createDirectories(folderPath);
-                }
+            String text = "";
+            if (prefix != null) text += prefix.name() + " ";
+            text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
+            if (text.contains("")) {
+                text = text.replace("", "\n");
+            } else {
+                text += "\n";
+            }
 
-                if (!Files.exists(filePath)) {
-                    Files.createFile(filePath);
-                }
-                String text = "";
-                if(prefix != null) text += prefix.name();
-                text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
-                if(text.contains("")) {
-                    text = text.replace("", "\n");
-                }else {
-                    text += "\n";
-                }
+            logQueue.offer(text); // Enqueue log message
 
-                try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
-                        StandardOpenOption.APPEND)) {
-                    writer.write(text);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (!executor.isShutdown()) {
+                executor.execute(() -> {
+                    try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
+                            StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                        String log;
+                        while ((log = logQueue.poll()) != null) { // Dequeue log messages
+                            writer.write(log);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
     }
 
+    public void shutdown() {
+        executor.shutdown();
+    }
 }
