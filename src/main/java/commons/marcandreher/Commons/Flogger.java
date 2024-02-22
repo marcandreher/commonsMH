@@ -104,7 +104,7 @@ public class Flogger {
                     Files.createFile(filePath);
                 }
                 String text = "";
-                if(prefix != null) message += prefix.name();
+                if(prefix != null) text += prefix.name();
                 text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
                 if(text.contains("")) {
                     text = text.replace("", "\n");
