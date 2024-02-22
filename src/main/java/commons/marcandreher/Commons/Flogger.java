@@ -89,14 +89,27 @@ public class Flogger {
         }
 
         if (instanceName != null) {
-            String fileName = new SimpleDateFormat("yyyyMMddHHmm'.txt'").format(new Date());
-            Path path = Paths.get(FOLDER_LOCATION, instanceName + fileName);
-      
-            String text = message.replaceAll("\\d{1,2}(;\\d{1,2})?", "");
+            String fileName = new SimpleDateFormat("yyyyMMdd'.txt'").format(new Date());
+            Path folderPath = Paths.get(FOLDER_LOCATION);
+            Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
 
-            try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8,
-                    StandardOpenOption.APPEND, StandardOpenOption.CREATE)) {
-                writer.write(text);
+            try {
+                if (!Files.exists(folderPath)) {
+                    Files.createDirectories(folderPath);
+                }
+
+                if (!Files.exists(filePath)) {
+                    Files.createFile(filePath);
+                }
+
+                String text = message.replaceAll("\\d{1,2}(;\\d{1,2})?", "");
+
+                try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
+                        StandardOpenOption.APPEND)) {
+                    writer.write(text);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
