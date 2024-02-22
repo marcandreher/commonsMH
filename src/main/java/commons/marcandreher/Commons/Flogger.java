@@ -89,7 +89,7 @@ public class Flogger {
         }
 
         if (instanceName != null) {
-            String fileName = new SimpleDateFormat("yyyyMMdd'.txt'").format(new Date());
+            String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
             Path folderPath = Paths.get(FOLDER_LOCATION);
             Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
 
@@ -103,7 +103,7 @@ public class Flogger {
                 }
                 String text = "";
                 if(prefix != null) message += prefix.name();
-                text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replaceAll("", "\n").replaceAll("[m", "");
+                text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replaceAll("", "\n").replace("[m", "");
 
                 try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
                         StandardOpenOption.APPEND)) {
