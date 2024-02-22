@@ -20,6 +20,9 @@ public class Flogger {
     private int logLevel;
     public static Flogger instance;
 
+    private Path folderPath = Paths.get(FOLDER_LOCATION);
+    
+
     public enum Prefix {
         INFO(Color.CYAN + "[Info] " + Color.RESET), // INFO prefix
         ERROR(Color.RED + "[ERROR] " + Color.RESET), // ERROR prefix
@@ -90,7 +93,6 @@ public class Flogger {
 
         if (instanceName != null) {
             String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
-            Path folderPath = Paths.get(FOLDER_LOCATION);
             Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
 
             try {
@@ -103,7 +105,12 @@ public class Flogger {
                 }
                 String text = "";
                 if(prefix != null) message += prefix.name();
-                text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replaceAll("", "\n").replace("[m", "");
+                text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
+                if(text.contains("")) {
+                    text = text.replace("", "\n");
+                }else {
+                    text += "\n";
+                }
 
                 try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
                         StandardOpenOption.APPEND)) {
