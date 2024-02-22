@@ -81,7 +81,7 @@ public class FullstackRoute implements Route {
     }
 
     public void setMeta(Meta meta) {
-        this.meta = meta;
+        if(this.meta == null) this.meta = meta;
     } 
 
     public Object redirect(String location) {

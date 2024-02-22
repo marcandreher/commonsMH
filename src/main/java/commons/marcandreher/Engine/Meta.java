@@ -3,7 +3,7 @@ package commons.marcandreher.Engine;
 public class Meta {
 
     public static String siteTitle = "CommonsMH";
-    public static String domain = "http://localhost/";
+    public static String domain = "http://localhost";
 
     private String robots = "index, follow";
     private String openGraphType = "website";
@@ -27,6 +27,10 @@ public class Meta {
         this.title = title;
         this.url = url;
         this.keywords = keywords;
+    }
+
+    public Meta() {
+        
     }
 
 
