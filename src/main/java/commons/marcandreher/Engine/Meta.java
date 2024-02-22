@@ -2,6 +2,9 @@ package commons.marcandreher.Engine;
 
 public class Meta {
 
+    public static String siteTitle = "CommonsMH";
+    public static String domain = "http://localhost/";
+
     public String robots = "index, follow";
     public String openGraphType = "website";
     public String twitterCardType = "summary";
@@ -46,6 +49,7 @@ public class Meta {
     }
 
     public void setTitle(String title) {
+        title = title + " | " + siteTitle;
         this.title = title;
         this.twitterTitle = title;
         this.openGraphTitle = title;
@@ -58,6 +62,7 @@ public class Meta {
     }
 
     public void setUrl(String url) {
+        url = domain + url;
         this.url = url;
         this.canonial = url;
     }
