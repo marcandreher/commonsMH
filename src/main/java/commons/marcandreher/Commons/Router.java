@@ -12,6 +12,7 @@ import commons.marcandreher.Utils.RequestType;
 import dev.coly.discordoauth2.DiscordAPI;
 import dev.coly.discordoauth2.DiscordOAuth2;
 import dev.coly.discordoauth2.objects.User;
+import spark.Filter;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -121,6 +122,10 @@ public class Router {
         Spark.after((req, res) -> {
             res.header("Content-Encoding", "gzip");
         });
+    }
+
+    public void filter(String path, Filter filter) {
+        Spark.before(path, filter);
     }
 
     /**
