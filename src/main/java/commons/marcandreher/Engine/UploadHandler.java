@@ -24,10 +24,19 @@ public class UploadHandler implements Filter {
     private UploadAction action = null;
     
     private String location;
+    private String fileBoxName = "file";
 
     public UploadHandler(String location, long maxFileSize, long maxRequestSize, int fileSizeThreshold) {
         this.location = location;
         this.multipartConfig = new MultipartConfigElement(location, maxFileSize, maxRequestSize, fileSizeThreshold);
+    }
+
+    public void setFileBoxName(String fileBoxName) {
+        this.fileBoxName = fileBoxName;
+    }
+
+    public String getFileBoxName() {
+        return this.fileBoxName;
     }
 
     public void setAction(UploadAction action) {
@@ -50,16 +59,18 @@ public class UploadHandler implements Filter {
                 // Get MySQL connection
                 mysql = Database.getConnection();
                 // Execute actions before upload
-                action.beforeUpload(request, response, mysql);
+                if(!action.beforeUpload(request, response, mysql)) {
+                    return;
+                }
             }
 
             // Get the uploaded file part named "img"
-            Part filePart = request.raw().getPart("img");
+            Part filePart = request.raw().getPart(fileBoxName);
             if (filePart != null) {
                 // Get the InputStream to read the contents of the file
                 try (InputStream fileContent = filePart.getInputStream()) {
                     // Define the directory where you want to save the file
-                    Path targetPath = Paths.get(location, filePart.getSubmittedFileName());
+                    Path targetPath = Paths.get(location, action.chooseFileName(request, response, mysql, filePart.getSubmittedFileName()));
                     // Save the file to the specified directory
                     Files.copy(fileContent, targetPath, StandardCopyOption.REPLACE_EXISTING);
                 }
