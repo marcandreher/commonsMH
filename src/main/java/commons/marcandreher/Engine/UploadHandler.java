@@ -34,7 +34,7 @@ public class UploadHandler implements Filter {
         if (action != null) {
             mysql = Database.getConnection();
             action.beforeUpload(request, response, mysql);
-            mysql.close();
+  
         }
 
        
