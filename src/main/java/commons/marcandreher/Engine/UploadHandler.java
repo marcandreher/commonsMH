@@ -28,20 +28,18 @@ public class UploadHandler implements Filter {
 
     @Override
     public void handle(Request request, Response response) throws Exception {
+        request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfig);
+
         MySQL mysql = null;
         if (action != null) {
             mysql = Database.getConnection();
-            if (!action.beforeUpload(request, response, mysql)) {
-                return;
-            }
+            action.afterUpload(request, response, mysql);
+            mysql.close();
         }
 
-        request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfig);
-
+       
         if (action != null) {
-            if (!action.afterUpload(request, response, mysql)) {
-                return;
-            }
+            action.afterUpload(request, response, mysql);
             mysql.close();
         }
        
