@@ -60,7 +60,7 @@ public final class MySQL {
 				return 0;
 			}
 		} catch (Exception ex) {
-
+			Flogger.instance.log(Prefix.ERROR, ex.getMessage(), 0);
 			return -1;
 		}
 	}
