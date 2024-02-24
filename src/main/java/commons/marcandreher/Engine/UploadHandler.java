@@ -1,7 +1,14 @@
 package commons.marcandreher.Engine;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
@@ -16,7 +23,10 @@ public class UploadHandler implements Filter {
     private MultipartConfigElement multipartConfig;
     private UploadAction action = null;
     
+    private String location;
+
     public UploadHandler(String location, long maxFileSize, long maxRequestSize, int fileSizeThreshold) {
+        this.location = location;
         this.multipartConfig = new MultipartConfigElement(location, maxFileSize, maxRequestSize, fileSizeThreshold);
     }
 
@@ -43,15 +53,25 @@ public class UploadHandler implements Filter {
                 action.beforeUpload(request, response, mysql);
             }
 
+            // Get the uploaded file part named "img"
+            Part filePart = request.raw().getPart("img");
+            if (filePart != null) {
+                // Get the InputStream to read the contents of the file
+                try (InputStream fileContent = filePart.getInputStream()) {
+                    // Define the directory where you want to save the file
+                    Path targetPath = Paths.get(location, filePart.getSubmittedFileName());
+                    // Save the file to the specified directory
+                    Files.copy(fileContent, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+
             // Action after upload
             if (action != null) {
                 action.afterUpload(request, response, mysql);
             }
         } catch (Exception e) {
-        
             Flogger.instance.log(Prefix.ERROR, e.getMessage(), 0);
             e.printStackTrace();
-
             response.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.body("Internal Server Error");
         } finally {
