@@ -4,8 +4,25 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class TimestampConverter {
+
+    private static Locale locale = Locale.ENGLISH; // Default language is English
+
+    /**
+     * Sets the language preference to German.
+     */
+    public static void setGermanLanguage() {
+        locale = Locale.GERMAN;
+    }
+
+    /**
+     * Sets the language preference to English (default).
+     */
+    public static void setEnglishLanguage() {
+        locale = Locale.ENGLISH;
+    }
 
     /**
      * Calculates the time difference between the given timestamp and the current time.
@@ -24,32 +41,72 @@ public class TimestampConverter {
         Duration duration = Duration.between(baseTime.toLocalTime(), targetTime.toLocalTime());
 
         if (period.isZero() && duration.isZero()) {
-            return "now";
+            return getMessage("now");
         }
 
         if (period.getYears() > 0) {
-            return period.getYears() + (period.getYears() == 1 ? " year ago" : " years ago");
+            return getMessage(period.getYears() + (period.getYears() == 1 ? getMessage(" year") : getMessage(" years")));
         }
 
         if (period.getMonths() > 0) {
-            return period.getMonths() + (period.getMonths() == 1 ? " month ago" : " months ago");
+            return getMessage(period.getMonths() + (period.getMonths() == 1 ? getMessage(" month") : getMessage(" months")));
         }
 
         if (period.getDays() > 0) {
-            return period.getDays() + (period.getDays() == 1 ? " day ago" : " days ago");
+            return getMessage(period.getDays() + (period.getDays() == 1 ? getMessage(" day") : getMessage(" days")));
         }
 
         if (duration.toHours() > 0) {
-            return duration.toHours() + (duration.toHours() == 1 ? " hour ago" : " hours ago");
+            return getMessage(duration.toHours() + (duration.toHours() == 1 ? getMessage(" hour"): getMessage(" hours")));
         }
 
         if (duration.toMinutes() > 0) {
-            return duration.toMinutes() + (duration.toMinutes() == 1 ? " minute ago" : " minutes ago");
+            return (duration.toMinutes() + (duration.toMinutes() == 1 ? getMessage(" minute") : getMessage(" minutes") ));
         }
 
-        return "Invalid timestamp";
+        return getMessage("Invalid timestamp");
     }
 
+    /**
+     * Returns the localized message based on the provided key.
+     *
+     * @param key The key for the message.
+     * @return The localized message.
+     */
+    private static String getMessage(String key) {
+        if (locale == Locale.GERMAN) {
+            switch (key) {
+                case "now":
+                    return "jetzt";
+                case "Invalid timestamp":
+                    return "Ungültiger Zeitstempel";
+                case " minute":
+                    return " Minute";
+                case " minutes":
+                    return " Minuten";
+                case " hour":
+                    return " Stunde";
+                case " hours":
+                    return " Stunden";
+                case " day":
+                    return " Tag";
+                case " days":
+                    return " Tage";
+                case " month":
+                    return " Monat";
+                case " months":
+                    return " Monate";
+                case " year":
+                    return " Jahr";
+                case " years":
+                    return " Jahre";
+                default:
+                    return key;
+            }
+        } else {
+            return key;
+        }
+    }
     /**
      * Calculates the time difference between the given date string and the current time.
      * The date string must be in the format "yyyy-MM-dd HH:mm:ss".
