@@ -7,6 +7,7 @@ import commons.marcandreher.Auth.DiscordLogin;
 import commons.marcandreher.Auth.DiscordLoginHandler;
 import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Engine.FullstackRoute;
+import commons.marcandreher.Engine.HealthRoute;
 import commons.marcandreher.Engine.UploadHandler;
 import commons.marcandreher.Utils.RequestType;
 import dev.coly.discordoauth2.DiscordAPI;
@@ -181,6 +182,10 @@ public class Router {
     public void patch(String route, Route routeClass) {
         routes.add(new RoutePair(RequestType.PATCH, route));
         Spark.patch(route, routeClass);
+    }
+
+    public void registerHealthRoute(String route) {
+        get(route, new HealthRoute());
     }
 
     /**
