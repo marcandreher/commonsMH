@@ -73,6 +73,13 @@ public class Flogger {
         this.logLevel = logLevel;
     }
 
+    public void error(Exception e) {
+        log(Prefix.ERROR, e.getMessage() + " at:", 0);
+        for (StackTraceElement element : e.getStackTrace()) {
+            log(Prefix.ERROR, element.toString(), 0);
+        }
+    }
+
     public void log(Prefix prefix, String message, int level) {
         if (level <= logLevel)
             handleLog(prefix, message);
