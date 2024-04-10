@@ -18,12 +18,12 @@ public class CacheTimer {
 
     private int period;
 
-    public CacheTimer(int period, int poolSize, Flogger logger) {
+    public CacheTimer(int period, int poolSize, TimeUnit timeUnit) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(poolSize);
         this.period = period;
         scheduler.scheduleAtFixedRate(() -> {
-            runUpdate(logger);
-        }, 0, period, TimeUnit.MINUTES);
+            runUpdate(Flogger.instance);
+        }, 0, period, timeUnit);
     }
 
     public void addAction(Action action) {
@@ -31,7 +31,7 @@ public class CacheTimer {
     }
 
     public void runUpdate(Flogger logger) {
-        logger.log("  -> Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 3);
+        logger.log(Prefix.INFO, "Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 10);
 
         for (int i = 0; i < actionList.size(); i++) {
             Action ac = actionList.get(i);
@@ -40,7 +40,6 @@ public class CacheTimer {
             if (ac instanceof DatabaseAction) {
                 DatabaseAction acdb = (DatabaseAction) ac;
                 acdb.mysql.close();
-                logger.log(Prefix.INFO, "Closes connection of Action(" + i + ")", 3);
             }
         }
     }
