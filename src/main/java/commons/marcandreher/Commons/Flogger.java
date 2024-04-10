@@ -1,6 +1,7 @@
 package commons.marcandreher.Commons;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -95,6 +96,11 @@ public class Flogger {
             System.out.println(prefix + message);
         } else {
             System.out.println(message);
+        }
+
+        File logsFolder = new File(FOLDER_LOCATION);
+        if(!logsFolder.exists() || !logsFolder.isDirectory()) {
+            logsFolder.mkdirs();
         }
 
         if (instanceName != null) {
