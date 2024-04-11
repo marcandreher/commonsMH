@@ -1,15 +1,26 @@
 package commons.marcandreher.Commons;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.lukaspradel.steamapi.data.json.playersummaries.GetPlayerSummaries;
+import com.lukaspradel.steamapi.data.json.playersummaries.Player;
+import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
+import com.lukaspradel.steamapi.webapi.request.GetPlayerSummariesRequest;
+import com.lukaspradel.steamapi.webapi.request.builders.SteamWebApiRequestFactory;
+
 import commons.marcandreher.Auth.DiscordLogin;
 import commons.marcandreher.Auth.DiscordLoginHandler;
+import commons.marcandreher.Auth.SteamLogin;
+import commons.marcandreher.Auth.SteamLoginHandler;
 import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Engine.FullstackRoute;
 import commons.marcandreher.Engine.HealthRoute;
 import commons.marcandreher.Engine.UploadHandler;
 import commons.marcandreher.Utils.RequestType;
+import commons.marcandreher.Utils.SteamUser;
 import dev.coly.discordoauth2.DiscordAPI;
 import dev.coly.discordoauth2.DiscordOAuth2;
 import dev.coly.discordoauth2.objects.User;
@@ -219,4 +230,50 @@ public class Router {
             }
         });
     }
+
+    public void registerSteamRoute(String route, SteamLoginHandler handler, SteamLogin steamLogin) {
+        Spark.get(route, new FullstackRoute() {
+            @Override
+            public Object handle(Request request, Response response) {
+                super.handle(request, response);
+                logger.log(Prefix.INFO, "Steam login requested", 2);
+
+                try {
+                    logger.log(Prefix.INFO, "-> Steam Login", 2);
+
+                    SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(
+                           steamLogin.steamApiKey).build();
+
+                    
+                    String steamid = steamLogin.getSteamLogin().verify(request.url(), request.queryMap().toMap());
+
+                    List<String> steamids = new ArrayList<String>();
+                    
+                    steamids.add(steamid);
+                    
+                    GetPlayerSummariesRequest request2 = SteamWebApiRequestFactory
+                            .createGetPlayerSummariesRequest(steamids);
+                    GetPlayerSummaries getPlayerSummaries = client.<GetPlayerSummaries>processRequest(request2);
+                    Player pl = null;
+                    try {
+                        pl = getPlayerSummaries.getResponse().getPlayers().get(0);
+                    }catch(Exception e) {
+                        logger.error(e);
+                        return null;
+                    }
+                    SteamUser user = new SteamUser();
+                    user.setSteamAvatar(pl.getAvatarmedium());
+                    user.setSteamId(steamid);
+                    user.setSteamName(pl.getPersonaname());
+                  
+                    return handler.handleDiscordLogin(user, request, response, mysql, logger);
+                } catch (Exception e) {
+                    logger.log(Prefix.ERROR, "Steam login failed " + e.getMessage(), 0);
+                    return null;
+                }
+
+            }
+        });
+    }
 }
+
