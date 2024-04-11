@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import commons.marcandreher.Auth.DiscordLogin;
+import commons.marcandreher.Auth.SteamLogin;
 import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.MySQL;
@@ -66,6 +67,10 @@ public class FullstackRoute implements Route {
 
         if (DiscordLogin.disUrl != null) {
             this.webMap.put("disUrl", DiscordLogin.disUrl);
+        }
+
+        if(SteamLogin.stUrl != null) {
+            this.webMap.put("stUrl", SteamLogin.stUrl);
         }
     }
 
