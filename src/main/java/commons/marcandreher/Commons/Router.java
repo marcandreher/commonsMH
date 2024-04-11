@@ -210,7 +210,7 @@ public class Router {
                     logger.log(Prefix.INFO, "-> Discord Login", 2);
                     User u = DiscordAPI.getUser(dcauth2.getTokens(request.queryParams("code")).getAccessToken());
                     logger.log(Prefix.INFO, "Discord Handler called", 2);
-                    return handler.handleDiscordLogin(u, request, response, mysql);
+                    return handler.handleDiscordLogin(u, request, response, mysql, logger);
                     
                 } catch (Exception e) {
                     logger.log(Prefix.ERROR, "Discord login failed " + e.getMessage(), 0);
