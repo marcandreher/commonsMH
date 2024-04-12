@@ -28,7 +28,6 @@ public class Flogger {
     private Queue<String> logQueue = new ConcurrentLinkedQueue<>();
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    
     public enum Prefix {
         INFO(Color.CYAN + "[Info] " + Color.RESET), // INFO prefix
         ERROR(Color.RED + "[ERROR] " + Color.RESET), // ERROR prefix
@@ -51,7 +50,6 @@ public class Flogger {
             return code;
         }
     }
-
 
     public void setInstanceName(String name) {
         this.instanceName = name;
@@ -95,7 +93,21 @@ public class Flogger {
         System.out.print("\033[" + y + ";" + x + "H");
     }
 
+    public void print(String prefix, String message) {
+        System.out.print("\033[1A"); // Move up one line
+        System.out.print("\033[K"); // Clear the line
+        System.out.flush();
+        if (prefix != null) {
+            System.out.println(prefix + message);
+        } else {
+            System.out.println(message);
+        }
+    }
+
     private void handleLog(Prefix prefix, String message) {
+        System.out.print("\033[1A"); // Move up one line
+        System.out.print("\033[K"); // Clear the line
+        System.out.flush();
         if (prefix != null) {
             System.out.println(prefix + message);
         } else {
@@ -103,28 +115,29 @@ public class Flogger {
         }
 
         File logsFolder = new File(FOLDER_LOCATION);
-        if(!logsFolder.exists() || !logsFolder.isDirectory()) {
+        if (!logsFolder.exists() || !logsFolder.isDirectory()) {
             logsFolder.mkdirs();
         }
 
         if (instanceName != null) {
-           
+
             if (!executor.isShutdown()) {
                 executor.execute(() -> {
                     String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
                     Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
-        
+
                     String text = "";
-                    if (prefix != null) text += prefix.name() + " ";
+                    if (prefix != null)
+                        text += prefix.name() + " ";
                     text += message.replaceAll("\\d{1,2}(;\\d{1,2})?", "").replace("[m", "");
                     if (text.contains("")) {
                         text = text.replace("", "\n");
                     } else {
                         text += "\n";
                     }
-        
+
                     logQueue.offer(text); // Enqueue log message
-        
+
                     try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
                             StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
                         String log;

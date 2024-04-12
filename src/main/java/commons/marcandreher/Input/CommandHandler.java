@@ -1,5 +1,6 @@
 package commons.marcandreher.Input;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +18,27 @@ import commons.marcandreher.Input.Commands.ThreadCheck;
 public class CommandHandler extends Thread {
 
     private Flogger logger;
+    private Console console = System.console();
 
     public CommandHandler(Flogger llogger) {
         this.logger = llogger;
+
+        
+        if (console == null) {
+            Flogger.instance.log(Prefix.ERROR, "No Console", 0);
+        }
     }
 
     public static List<Command> initializedCommands = new ArrayList<>();
 
     public void run() {
         logger.log(Prefix.INFO,  "CommandHandler v1.9 | Type help", 1);
+        if(console == null) return;
         while (true) {
+            System.out.print("\033[999;0H"); // Move to line 999, column 0
             System.out.print("admin@commonsmh:~$ ");
-
+            System.out.flush();
+            
             // Read user input
             String input = System.console().readLine();
 
