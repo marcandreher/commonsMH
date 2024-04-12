@@ -27,15 +27,16 @@ public class CommandHandler extends Thread {
     public void run() {
         logger.log(Prefix.INFO,  "CommandHandler v1.9 | Type help", 1);
         while (true) {
-            // Read user input
             System.out.print("admin@commonsmh:~$ ");
+
+            // Read user input
             String input = System.console().readLine();
-    
-            if (input == null) continue;
-    
+
+            if(input == null) break;
+
             // Split input into command and arguments
             String[] argsCmd = input.split(" ");
-    
+
             Boolean foundCmd = false;
             for (Command cmd : initializedCommands) {
                 if (argsCmd[0].equalsIgnoreCase(cmd.getName())) {
@@ -44,16 +45,12 @@ public class CommandHandler extends Thread {
                     break;
                 }
             }
-    
+
             if (!foundCmd) {
                 logger.log(Prefix.INFO, "-> No Command found | Type help", 1);
             }
-    
-            // Move cursor to the next line
-            System.out.println();
         }
     }
-    
 
     public void initialize() {
         registerCommand(new Logger());
