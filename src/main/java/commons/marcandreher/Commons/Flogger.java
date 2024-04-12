@@ -91,12 +91,11 @@ public class Flogger {
             handleLog(null, message);
     }
 
-    private void moveToPosition(int x, int y) {
+    public void moveToPosition(int x, int y) {
         System.out.print("\033[" + y + ";" + x + "H");
     }
 
     private void handleLog(Prefix prefix, String message) {
-        moveToPosition(1, 0);
         if (prefix != null) {
             System.out.println(prefix + message);
         } else {
