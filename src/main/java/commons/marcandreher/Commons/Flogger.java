@@ -94,8 +94,6 @@ public class Flogger {
     }
 
     public void print(String prefix, String message) {
-        System.out.print("\033[1A"); // Move up one line
-        System.out.print("\033[K"); // Clear the line
         System.out.flush();
         if (prefix != null) {
             System.out.println(prefix + message);
@@ -105,8 +103,6 @@ public class Flogger {
     }
 
     private void handleLog(Prefix prefix, String message) {
-        System.out.print("\033[1A"); // Move up one line
-        System.out.print("\033[K"); // Clear the line
         System.out.flush();
         if (prefix != null) {
             System.out.println(prefix + message);
