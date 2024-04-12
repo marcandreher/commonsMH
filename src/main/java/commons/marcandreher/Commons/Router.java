@@ -221,8 +221,12 @@ public class Router {
                     logger.log(Prefix.INFO, "-> Discord Login", 2);
                     User u = DiscordAPI.getUser(dcauth2.getTokens(request.queryParams("code")).getAccessToken());
                     logger.log(Prefix.INFO, "Discord Handler called", 2);
-                    return handler.handleDiscordLogin(u, request, response, mysql, logger);
-                    
+                   
+                    String outputString = handler.handleDiscordLogin(u, request, response, mysql, logger);
+
+                    mysql.close();
+                  
+                    return outputString;
                 } catch (Exception e) {
                     logger.log(Prefix.ERROR, "Discord login failed " + e.getMessage(), 0);
                     return null;
@@ -265,8 +269,12 @@ public class Router {
                     user.setSteamAvatar(pl.getAvatarmedium());
                     user.setSteamId(steamid);
                     user.setSteamName(pl.getPersonaname());
+
+                    String outputString = handler.handleSteamLogin(user, request, response, mysql, logger);
+
+                    mysql.close();
                   
-                    return handler.handleDiscordLogin(user, request, response, mysql, logger);
+                    return outputString;
                 } catch (Exception e) {
                     logger.log(Prefix.ERROR, "Steam login failed " + e.getMessage(), 0);
                     return null;

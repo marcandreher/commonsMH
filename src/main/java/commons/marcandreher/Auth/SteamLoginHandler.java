@@ -10,7 +10,7 @@ import spark.Response;
 public interface SteamLoginHandler {
 
 
-    public String handleDiscordLogin(SteamUser user, Request request, Response response, MySQL mysql, Flogger logger);
+    public String handleSteamLogin(SteamUser user, Request request, Response response, MySQL mysql, Flogger logger);
     
 }
 

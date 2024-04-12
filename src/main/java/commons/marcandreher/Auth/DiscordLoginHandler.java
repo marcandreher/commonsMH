@@ -10,7 +10,7 @@ import spark.Response;
 public interface DiscordLoginHandler {
 
 
-    public String handleDiscordLogin(User u, Request request, Response response, MySQL mysql, Flogger logger);
+    public String handleDiscordLogin(User user, Request request, Response response, MySQL mysql, Flogger logger);
     
 }
 
