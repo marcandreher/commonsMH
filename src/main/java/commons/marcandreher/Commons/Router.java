@@ -140,6 +140,11 @@ public class Router {
         Spark.before(path, filter);
     }
 
+    public void notFound(Route route) {
+        Spark.notFound(route);
+        Spark.get("*", route);
+    }
+
     /**
      * Adds a GET route.
      *
