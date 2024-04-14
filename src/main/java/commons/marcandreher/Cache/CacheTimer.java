@@ -38,8 +38,9 @@ public class CacheTimer {
 
     public void runUpdate(Flogger logger) {
         logger.log(Prefix.INFO, "Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 10);
-        isRunning = true;
+       
         for (int i = 0; i < actionList.size(); i++) {
+            isRunning = true;
             Action ac = actionList.get(i);
             ac.executeAction(logger);
 
@@ -47,8 +48,9 @@ public class CacheTimer {
                 DatabaseAction acdb = (DatabaseAction) ac;
                 acdb.mysql.close();
             }
+            isRunning = false;
         }
-        isRunning = false;
+  
     }
     
 }

@@ -65,7 +65,6 @@ public class FullstackRoute implements Route {
             if (timer.isRunning()) {
                 return notFound();
             }
-            
         }
 
         mapAssignment();
