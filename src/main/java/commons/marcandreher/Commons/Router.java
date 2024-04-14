@@ -15,6 +15,7 @@ import commons.marcandreher.Auth.DiscordLogin;
 import commons.marcandreher.Auth.DiscordLoginHandler;
 import commons.marcandreher.Auth.SteamLogin;
 import commons.marcandreher.Auth.SteamLoginHandler;
+import commons.marcandreher.Cache.CacheTimer;
 import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Engine.FullstackRoute;
 import commons.marcandreher.Engine.HealthRoute;
@@ -35,8 +36,14 @@ import spark.Spark;
  */
 public class Router {
 
+    public static ArrayList<CacheTimer> interuptingCacheTimers = new ArrayList<>();
+
     private Flogger logger;
     private Set<RoutePair> routes;
+
+    public void addInteruptingCacheTimer(CacheTimer timer) {
+        Router.interuptingCacheTimers.add(timer);
+    }
 
     public Router(Flogger logger) {
         this.logger = logger;

@@ -18,6 +18,8 @@ public class CacheTimer {
 
     private int period;
 
+    private boolean isRunning = false;
+
     public CacheTimer(int period, int poolSize, TimeUnit timeUnit) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(poolSize);
         this.period = period;
@@ -26,13 +28,17 @@ public class CacheTimer {
         }, 0, period, timeUnit);
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
     public void addAction(Action action) {
         actionList.add(action);
     }
 
     public void runUpdate(Flogger logger) {
         logger.log(Prefix.INFO, "Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 10);
-
+        isRunning = true;
         for (int i = 0; i < actionList.size(); i++) {
             Action ac = actionList.get(i);
             ac.executeAction(logger);
@@ -42,6 +48,7 @@ public class CacheTimer {
                 acdb.mysql.close();
             }
         }
+        isRunning = false;
     }
     
 }

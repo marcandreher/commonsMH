@@ -10,9 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import commons.marcandreher.Auth.DiscordLogin;
 import commons.marcandreher.Auth.SteamLogin;
+import commons.marcandreher.Cache.CacheTimer;
 import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.MySQL;
+import commons.marcandreher.Commons.Router;
 import commons.marcandreher.Commons.WebServer;
 import commons.marcandreher.Utils.Color;
 import commons.marcandreher.Utils.Stopwatch;
@@ -41,6 +43,12 @@ public class FullstackRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
+        for (CacheTimer timer : Router.interuptingCacheTimers) {
+            if (timer.isRunning()) {
+                return notFound();
+            }
+            
+        }
         log = Flogger.instance;
         this.request = request;
         this.response = response;
