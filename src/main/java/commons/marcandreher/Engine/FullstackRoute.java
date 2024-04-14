@@ -43,12 +43,7 @@ public class FullstackRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        for (CacheTimer timer : Router.interuptingCacheTimers) {
-            if (timer.isRunning()) {
-                return notFound();
-            }
-            
-        }
+       
         log = Flogger.instance;
         this.request = request;
         this.response = response;
@@ -64,6 +59,13 @@ public class FullstackRoute implements Route {
         if (this.log.getLogLevel() >= LOG_STOPWATCH_THRESHOLD) {
             this.stopWatch = new Stopwatch();
             this.stopWatch.start();
+        }
+
+        for (CacheTimer timer : Router.interuptingCacheTimers) {
+            if (timer.isRunning()) {
+                return notFound();
+            }
+            
         }
 
         mapAssignment();
