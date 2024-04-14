@@ -1,6 +1,8 @@
 package commons.marcandreher.Engine;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,8 +14,8 @@ import javax.servlet.http.Part;
 
 import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
-import commons.marcandreher.Commons.MySQL;
 import commons.marcandreher.Commons.Flogger.Prefix;
+import commons.marcandreher.Commons.MySQL;
 import spark.Filter;
 import spark.Request;
 import spark.Response;
@@ -29,6 +31,30 @@ public class UploadHandler implements Filter {
     public UploadHandler(String location, long maxFileSize, long maxRequestSize, int fileSizeThreshold) {
         this.location = location;
         this.multipartConfig = new MultipartConfigElement(location, maxFileSize, maxRequestSize, fileSizeThreshold);
+    }
+
+    public void setMultipartConfig(Request request) {
+        request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfig);
+    }
+
+    public Part uploadFile(Request request, String outputPath, String outputName, String fileInput) {
+        try {
+            Part filePart = request.raw().getPart(fileInput);
+            InputStream inputStream = filePart.getInputStream();
+           
+            OutputStream outputStream = new FileOutputStream(outputPath + outputName);
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.close();
+            inputStream.close();
+            return filePart;
+        } catch (Exception e) {
+           Flogger.instance.error(e);
+        }
+        return null;
     }
 
     public void setFileBoxName(String fileBoxName) {
@@ -50,8 +76,7 @@ public class UploadHandler implements Filter {
 
     @Override
     public void handle(Request request, Response response) throws Exception {
-        // Set the multipart configuration for the request
-        request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfig);
+        setMultipartConfig(request);
 
         MySQL mysql = null;
         try {
