@@ -17,7 +17,27 @@
 12. [SitemapGenerator](#sitemapgen)
 13. [License](#license)
     
+## Database connection <a name="database"></a>
 
+```java
+Database database = new Database();
+database.setDefaultSettings(); // Adds auto reconnect to mysql connections and cachePrepStmts
+database.setMaximumPoolSize(30); // Sets the pool size
+database.setConnectionTimeout(3000); // Set the timeout
+// You will need to provide a own cfg before
+database.connectToMySQL(CONFIG.getServerIp(), CONFIG.getMySQLUserName(), CONFIG.getMySQLPassword(), CONFIG.getMySQLDatabase(), ServerTimezone.UTC); // Connect the Instance to the Server
+
+// You now can pull connections with:
+MySQL myConnection = Database.getConnection(); // throws SQLException
+
+myConnection.Query("SELECT * FROM `users` WHERE `id` = ?", 2); // prepStatements in one Line
+myConnection.Exec("DELETE FROM `users` WHERE `id` = ?", 2);
+
+// You will need to close this after you finish
+myConnection.close();
+
+// Many things in commonsMH will provide you with an connection that will automaticly close
+```
 
 ## License <a name="license"></a>
 
