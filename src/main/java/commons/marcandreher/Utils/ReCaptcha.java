@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import commons.marcandreher.Commons.GetRequest;
+import commons.marcandreher.Commons.GETRequest;
 
 
 public class ReCaptcha {
@@ -39,7 +39,7 @@ public class ReCaptcha {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(new GetRequest(requestUrl).send(userAgent));
+            JsonNode jsonNode = objectMapper.readTree(new GETRequest(requestUrl).send(userAgent));
 
             if (!jsonNode.has("success") || !jsonNode.get("success").asBoolean()) {
                 return false;
