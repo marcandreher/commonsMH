@@ -9,7 +9,7 @@ import java.net.http.HttpResponse;
 /**
  * This class represents a GET request to a specified URL.
  */
-public class GETRequest {
+public class GetRequest {
 
     private String url;
 
@@ -17,7 +17,7 @@ public class GETRequest {
      * Constructs a GetRequest object with the specified URL.
      * @param url the URL to send the GET request to
      */
-    public GETRequest(String url) {
+    public GetRequest(String url) {
         this.url = url;
     }
 
