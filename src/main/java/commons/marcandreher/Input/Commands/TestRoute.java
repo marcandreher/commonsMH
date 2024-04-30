@@ -60,17 +60,17 @@ public class TestRoute implements Command {
 
     @Override
     public String getAlias() {
-        return "testroute <protocol://domain> <amount?>";
+        return "request <protocol://domain> <amount?>";
     }
 
     @Override
     public String getDescription() {
-        return "Unittest a Route";
+        return "Unittest a Route or test stabillity";
     }
 
     @Override
     public String getName() {
-        return "testroute";
+        return "request";
     }
 
 }
