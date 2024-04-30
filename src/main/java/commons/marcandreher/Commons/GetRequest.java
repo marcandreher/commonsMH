@@ -6,10 +6,20 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import commons.marcandreher.Utils.Stopwatch;
+
+
+
 /**
  * This class represents a GET request to a specified URL.
  */
 public class GetRequest {
+
+    public class DebugGETRequest {
+        public int statusCode;
+        public boolean failed;
+        public long elapsedTime;
+    }
 
     private String url;
 
@@ -44,6 +54,28 @@ public class GetRequest {
         } else {
             throw new IOException("Failed to retrieve data. HTTP error code: " + statusCode);
         }
+    }
+
+    public DebugGETRequest sendDebug(String userAgent) {
+        DebugGETRequest debugGETRequest = new DebugGETRequest();
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        try {
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("User-Agent", userAgent)
+                    .GET()
+                    .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            debugGETRequest.statusCode = response.statusCode();
+        } catch (Exception e) {
+            debugGETRequest.failed = true;
+        }
+        stopwatch.stop();
+        debugGETRequest.elapsedTime = stopwatch.getElapsedTime();
+
+        return debugGETRequest;
     }
 
 }
