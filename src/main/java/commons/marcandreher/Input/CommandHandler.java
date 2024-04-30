@@ -1,7 +1,14 @@
 package commons.marcandreher.Input;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.UserInterruptException;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.Flogger.Prefix;
@@ -12,44 +19,52 @@ import commons.marcandreher.Input.Commands.Shutdown;
 import commons.marcandreher.Input.Commands.TestRoute;
 import commons.marcandreher.Input.Commands.ThreadCheck;
 
-
-
-
 public class CommandHandler extends Thread {
 
     private Flogger logger;
 
     public CommandHandler(Flogger llogger) {
         this.logger = llogger;
-        
+
     }
 
     public static List<Command> initializedCommands = new ArrayList<>();
 
     public void run() {
-        logger.log(Prefix.INFO,  "CommandHandler v1.9 | Type help", 1);
+        Terminal terminal = null;
+        try {
+            terminal = TerminalBuilder.builder().system(true).build();
+        } catch (IOException e) {
+            Flogger.instance.error(e);
+            return;
+        }
+        LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
+        logger.log(Prefix.INFO, "CommandHandler v1.9 | Type help", 1);
         while (true) {
-            System.out.print("admin@commonsmh:~$ ");
+            try {
+                String input = reader.readLine("admin@commonsmh:~$ ");
 
-            // Read user input
-            String input = System.console().readLine();
-
-            if(input == null) break;
-
-            // Split input into command and arguments
-            String[] argsCmd = input.split(" ");
-
-            Boolean foundCmd = false;
-            for (Command cmd : initializedCommands) {
-                if (argsCmd[0].equalsIgnoreCase(cmd.getName())) {
-                    cmd.executeAction(argsCmd, logger);
-                    foundCmd = true;
+                if (input == null)
                     break;
-                }
-            }
 
-            if (!foundCmd) {
-                logger.log(Prefix.INFO, "-> No Command found | Type help", 1);
+                String[] argsCmd = input.split(" ");
+
+                Boolean foundCmd = false;
+                for (Command cmd : initializedCommands) {
+                    if (argsCmd[0].equalsIgnoreCase(cmd.getName())) {
+                        cmd.executeAction(argsCmd, logger);
+                        foundCmd = true;
+                        break;
+                    }
+                }
+
+                if (!foundCmd) {
+                    logger.log(Prefix.INFO, "-> No Command found | Type help", 1);
+                }
+            } catch (UserInterruptException e) {
+                continue;
+            } catch (Exception e) {
+                logger.error(e);
             }
         }
     }
