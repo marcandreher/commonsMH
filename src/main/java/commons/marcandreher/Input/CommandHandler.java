@@ -27,6 +27,8 @@ public class CommandHandler {
     public static List<Command> initializedCommands = new ArrayList<>();
     private ExecutorService executorService;
 
+    public static Terminal terminal = null;
+
     public CommandHandler(Flogger logger) {
         this.logger = logger;
         this.executorService = Executors.newFixedThreadPool(2); // Create a thread pool with 2 threads
@@ -45,7 +47,7 @@ public class CommandHandler {
     }
 
     private void readUserInput() {
-        Terminal terminal;
+        
         try {
             terminal = TerminalBuilder.builder().system(true).build();
             LineReader reader = LineReaderBuilder.builder()
