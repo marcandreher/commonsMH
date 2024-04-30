@@ -9,6 +9,7 @@ import commons.marcandreher.Input.Commands.Help;
 import commons.marcandreher.Input.Commands.Logger;
 import commons.marcandreher.Input.Commands.SQL;
 import commons.marcandreher.Input.Commands.Shutdown;
+import commons.marcandreher.Input.Commands.TestRoute;
 import commons.marcandreher.Input.Commands.ThreadCheck;
 
 
@@ -60,6 +61,7 @@ public class CommandHandler extends Thread {
         registerCommand(new SQL());
         registerCommand(new ThreadCheck());
         registerCommand(new Help());
+        registerCommand(new TestRoute());
 
         CommandHandler commandHandlerThread = new CommandHandler(logger);
         commandHandlerThread.setName("CommandHandler");
