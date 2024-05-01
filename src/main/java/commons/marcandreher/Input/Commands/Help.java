@@ -28,7 +28,7 @@ public class Help extends ExtendedCommand {
         return "help";
     }
 
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 5;
 
     @Override
     public void executeAction(String[] args, Flogger logger) {
@@ -51,7 +51,8 @@ public class Help extends ExtendedCommand {
                 terminal.writer().println("■\tPage " + Color.GREEN + currentPage + Color.RESET + "/" + Color.GREEN + totalPages + Color.RESET);
                 for (int i = startIndex; i < endIndex; i++) {
                     Command c = CommandHandler.initializedCommands.get(i);
-                    terminal.writer().println(c.getName() + " - " + c.getDescription());
+                    terminal.writer().println(Color.WHITE_BOLD_BRIGHT + c.getName() + Color.RESET + " - "  +  c.getDescription());
+                    if(c.getAlias() != null)
                     terminal.writer().println("\t└ " + c.getAlias());
                 }
                 terminal.flush();

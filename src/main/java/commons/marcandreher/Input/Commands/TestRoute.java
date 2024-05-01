@@ -7,6 +7,7 @@ import commons.marcandreher.Commons.GetRequest;
 import commons.marcandreher.Commons.GetRequest.DebugGETRequest;
 import commons.marcandreher.Commons.Flogger.Prefix;
 import commons.marcandreher.Input.Command;
+import commons.marcandreher.Utils.Color;
 
 public class TestRoute implements Command {
 
@@ -60,7 +61,7 @@ public class TestRoute implements Command {
 
     @Override
     public String getAlias() {
-        return "request <protocol://domain> <amount?>";
+        return "request <" + Color.GREEN + "string " + Color.RESET + ":protocol://domain> <" + Color.GREEN + "int" +  Color.RESET + ":amount" + Color.GREEN + "?" + Color.RESET +">";
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ThreadCheck implements Command {
 
     @Override
     public String getAlias() {
-        return "logger <" + Color.GREEN + "string" + Color.RESET + ":all>";
+        return "threadcheck <" + Color.GREEN + "string" + Color.RESET + ":all>";
     }
 
     @Override

@@ -11,7 +11,7 @@ public class Shutdown implements Command {
 
     @Override
     public String getAlias() {
-        return "shutdown <" + Color.GREEN + "string" + Color.RESET + ":now>";
+        return "shutdown <" + Color.GREEN + "string" + Color.RESET + ":now" + Color.GREEN + "?" + Color.RESET +">";
     }
 
     @Override
