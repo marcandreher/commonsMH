@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import commons.marcandreher.Input.CommandHandler;
 import commons.marcandreher.Utils.Color;
 
 public class Flogger {
@@ -104,27 +103,13 @@ public class Flogger {
     }
 
     private void handleLog(Prefix prefix, String message) {
-
-        if (CommandHandler.terminal != null) {
-            synchronized (CommandHandler.terminal) {
-                if (prefix != null) {
-                    System.out.println(prefix + message);
-                } else {
-                    System.out.println(message);
-                }
-            }
-
-        } else {
-
             System.out.flush();
             if (prefix != null) {
                 System.out.println(prefix + message);
             } else {
                 System.out.println(message);
             }
-
-        }
-
+        
         File logsFolder = new File(FOLDER_LOCATION);
         if (!logsFolder.exists() || !logsFolder.isDirectory()) {
             logsFolder.mkdirs();

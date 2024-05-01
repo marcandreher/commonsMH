@@ -3,8 +3,6 @@ package commons.marcandreher.Input;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -25,13 +23,11 @@ import commons.marcandreher.Input.Commands.ThreadCheck;
 public class CommandHandler {
     private Flogger logger;
     public static List<Command> initializedCommands = new ArrayList<>();
-    private ExecutorService executorService;
 
     public static Terminal terminal = null;
 
     public CommandHandler(Flogger logger) {
         this.logger = logger;
-        this.executorService = Executors.newFixedThreadPool(2); // Create a thread pool with 2 threads
     }
 
     public void initialize() {
@@ -42,12 +38,11 @@ public class CommandHandler {
         registerCommand(new ThreadCheck());
         registerCommand(new Help());
         registerCommand(new TestRoute());
-
-        executorService.execute(this::readUserInput);
+        readUserInput();
     }
 
     private void readUserInput() {
-        
+
         try {
             terminal = TerminalBuilder.builder().system(true).build();
             LineReader reader = LineReaderBuilder.builder()
@@ -97,6 +92,6 @@ public class CommandHandler {
     }
 
     public void shutdown() {
-        executorService.shutdownNow();
+        System.exit(0);
     }
 }
