@@ -23,7 +23,7 @@ import commons.marcandreher.Input.Commands.ThreadCheck;
 public class CommandHandler {
     private Flogger logger;
     public static List<Command> initializedCommands = new ArrayList<>();
-
+    public static final String VERSION = "2.1"; 
     public static Terminal terminal = null;
 
     public CommandHandler(Flogger logger) {
@@ -50,7 +50,7 @@ public class CommandHandler {
                             .terminal(terminal)
                             .build();
 
-            logger.log(Prefix.INFO, "CommandHandler v2.1 | Type help", 1);
+            logger.log(Prefix.INFO, "CommandHandler v" + VERSION + " | Type help", 1);
 
             while (true) {
                 try {

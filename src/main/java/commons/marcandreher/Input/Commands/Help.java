@@ -9,6 +9,7 @@ import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Input.Command;
 import commons.marcandreher.Input.CommandHandler;
 import commons.marcandreher.Input.ExtendedCommand;
+import commons.marcandreher.Utils.Color;
 
 public class Help extends ExtendedCommand {
 
@@ -46,10 +47,12 @@ public class Help extends ExtendedCommand {
             while (startIndex < CommandHandler.initializedCommands.size()) {
                 int endIndex = Math.min(startIndex + PAGE_SIZE, CommandHandler.initializedCommands.size());
                 terminal.puts(InfoCmp.Capability.clear_screen);
-                terminal.writer().println("Page " + currentPage + "/" + totalPages);
+                terminal.writer().println("█►\tCommonsMH Help " + Color.GREEN + "v" + CommandHandler.VERSION + Color.RESET + "\t◄█");
+                terminal.writer().println("■\tPage " + Color.GREEN + currentPage + Color.RESET + "/" + Color.GREEN + totalPages + Color.RESET);
                 for (int i = startIndex; i < endIndex; i++) {
                     Command c = CommandHandler.initializedCommands.get(i);
                     terminal.writer().println(c.getName() + " - " + c.getDescription());
+                    terminal.writer().println("\t└ " + c.getAlias());
                 }
                 terminal.flush();
 
