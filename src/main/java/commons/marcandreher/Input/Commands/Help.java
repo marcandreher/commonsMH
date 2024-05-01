@@ -1,15 +1,17 @@
 package commons.marcandreher.Input.Commands;
 
-import java.util.Scanner;
+import java.util.List;
 
-import commons.marcandreher.Commons.Flogger;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.impl.DefaultParser;
+import org.jline.terminal.Terminal;
+import org.jline.utils.InfoCmp;
+
 import commons.marcandreher.Input.Command;
-import commons.marcandreher.Input.CommandHandler;
-import commons.marcandreher.Utils.Color;
+import commons.marcandreher.Input.ExtendedCommand;
 
-public class Help implements Command {
-
-    private static final int PAGE_SIZE = 5;
+public class Help extends ExtendedCommand {
 
     @Override
     public String getAlias() {
@@ -26,32 +28,47 @@ public class Help implements Command {
         return "help";
     }
 
-    @Override
-    public void executeAction(String[] args, Flogger logger) {
-        logger.log(Flogger.Prefix.INFO, "Available Commands:", 0);
-        int totalPages = (int) Math.ceil(CommandHandler.initializedCommands.size() / (double) PAGE_SIZE);
-        int currentPage = 1;
-        int startIndex = (currentPage - 1) * PAGE_SIZE;
-        int endIndex = Math.min(startIndex + PAGE_SIZE, CommandHandler.initializedCommands.size());
-        Scanner scanner = null;
-        while (startIndex < endIndex) {
-            for (int i = startIndex; i < endIndex; i++) {
-                Command c = CommandHandler.initializedCommands.get(i);
-                logger.log(Flogger.Prefix.INFO, Color.GREEN + c.getName() + Color.RESET + " - " + c.getDescription(), 0);
-            }
-           
-            if (currentPage < totalPages) {
-                logger.log(Flogger.Prefix.INFO, "Press Enter to view next page", 0);
-                // Wait for user input to continue to the next page
-                // You can add your own logic here to handle user input
-                 scanner = new Scanner(System.in);
-                scanner.nextLine();
-            }
+    private static final int PAGE_SIZE = 10;
 
-            currentPage++;
-            startIndex = (currentPage - 1) * PAGE_SIZE;
-            endIndex = Math.min(startIndex + PAGE_SIZE, CommandHandler.initializedCommands.size());
+    public static void executeAction(List<Command> commands, Terminal terminal) {
+        try {
+            LineReader reader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .option(LineReader.Option.ERASE_LINE_ON_FINISH, true)
+                    .option(LineReader.Option.ERASE_LINE_ON_FINISH, true)
+                    .parser(new DefaultParser())
+                    .build();
+
+            int totalPages = (int) Math.ceil(commands.size() / (double) PAGE_SIZE);
+            int currentPage = 1;
+            int startIndex = 0;
+
+            while (startIndex < commands.size()) {
+                int endIndex = Math.min(startIndex + PAGE_SIZE, commands.size());
+                terminal.puts(InfoCmp.Capability.clear_screen);
+                terminal.writer().println("Page " + currentPage + "/" + totalPages);
+                for (int i = startIndex; i < endIndex; i++) {
+                    Command c = commands.get(i);
+                    terminal.writer().println(c.getName() + " - " + c.getDescription());
+                }
+                terminal.flush();
+
+                if (currentPage < totalPages) {
+                    terminal.writer().println("Press Enter to view next page");
+                    terminal.flush();
+                }
+
+                String line = reader.readLine();
+                if (line == null || line.equalsIgnoreCase("exit")) {
+                    break;
+                }
+
+                currentPage++;
+                startIndex += PAGE_SIZE;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
- 
+
 }

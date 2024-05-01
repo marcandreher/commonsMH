@@ -64,6 +64,9 @@ public class CommandHandler {
                     Boolean foundCmd = false;
                     for (Command cmd : initializedCommands) {
                         if (argsCmd[0].equalsIgnoreCase(cmd.getName())) {
+
+                            if(cmd instanceof ExtendedCommand) ((ExtendedCommand) cmd).terminal = terminal;
+
                             cmd.executeAction(argsCmd, logger);
                             foundCmd = true;
                             break;
