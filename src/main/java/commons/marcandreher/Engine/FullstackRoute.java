@@ -127,10 +127,12 @@ public class FullstackRoute implements Route {
 
         } catch (IOException e) {
             log.log(Flogger.Prefix.ERROR, "Error loading template: " + Color.GREEN + location + Color.RESET, 0);
+            log.error(e);
             throw new RuntimeException("Error loading template: " + location, e);
            
         } catch (Exception e) {
             log.log(Flogger.Prefix.ERROR, "Error loading template: " + Color.GREEN + location + Color.RESET, 0);
+            log.error(e);
             response.status(500);
         } finally {
             this.mysql.close();
