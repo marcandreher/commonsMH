@@ -3,6 +3,8 @@ package commons.marcandreher.Commons;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -11,7 +13,30 @@ import commons.marcandreher.Commons.Flogger.Prefix;
 public final class MySQL {
 
 	public static int LOGLEVEL = 4;
+	private final int COLUMN_WIDTH = 20;
 
+    private void printResultSet(ResultSet resultSet) {
+        try {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = metaData.getColumnName(i);
+                System.out.printf("%-" + COLUMN_WIDTH + "s", columnName);
+            }
+            System.out.println();
+
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnValue = resultSet.getString(i);
+                    System.out.printf("%-" + COLUMN_WIDTH + "s", columnValue);
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	private Connection currentCon;
 
 	public MySQL(Connection currentCon) {
@@ -30,6 +55,11 @@ public final class MySQL {
 
 			return null;
 		}
+	}
+
+	public void printQuery(String sql, String... args) {
+		ResultSet rs = Query(sql, args);
+		printResultSet(rs);
 	}
 
 	public ResultSet Query(String sql, List<String> args) {
