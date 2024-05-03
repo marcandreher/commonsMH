@@ -10,7 +10,7 @@ import commons.marcandreher.Commons.Flogger.Prefix;
 
 public class Database {
     private HikariConfig hikariConfig;
-    private static HikariDataSource dataSource;
+    public static HikariDataSource dataSource;
     private int connectionTimeout;
     private int maximumPoolSize;
     public static int currentConnections;

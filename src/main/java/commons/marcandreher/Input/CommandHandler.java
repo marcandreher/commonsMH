@@ -68,6 +68,9 @@ public class CommandHandler {
                             if(cmd instanceof ExtendedCommand) ((ExtendedCommand) cmd).terminal = terminal;
 
                             cmd.executeAction(argsCmd, logger);
+
+                            if(cmd instanceof DatabaseCommand) ((DatabaseCommand) cmd).mysql.close();
+
                             foundCmd = true;
                             break;
                         }
