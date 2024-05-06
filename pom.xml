@@ -96,17 +96,18 @@
       <artifactId>sitemapgen4j</artifactId>
       <version>1.1.1</version>
     </dependency>
+
     <dependency>
-      <groupId>com.sparkjava</groupId>
-      <artifactId>spark-core</artifactId>
-      <version>2.9.4</version>
+      <groupId>com.github.bowika</groupId>
+      <artifactId>spark</artifactId>
+      <version>40e9a4fc7e</version>
       <exclusions>
         <exclusion>
           <artifactId>slf4j-api</artifactId>
           <groupId>org.slf4j</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
+  </dependency>
     <dependency>
       <groupId>com.sparkjava</groupId>
       <artifactId>spark-template-freemarker</artifactId>
