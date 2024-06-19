@@ -78,22 +78,26 @@ public final class MySQL {
 	public int Exec(String sql, String... args) {
 		try {
 			PreparedStatement stmt = currentCon.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			for (int i = 0; i < args.length; i++)
+			for (int i = 0; i < args.length; i++) {
 				stmt.setString(i + 1, args[i]);
-
-			stmt.execute();
-			ResultSet rs = stmt.getGeneratedKeys();
+			}
+	
+			int rowsAffected = stmt.executeUpdate();
 			Flogger.instance.log(Prefix.INFO, stmt.toString(), LOGLEVEL);
+
+			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				return rs.getInt(1);
+				int generatedKey = rs.getInt(1);
+				return generatedKey;
 			} else {
-				return 0;
+				return rowsAffected;
 			}
 		} catch (Exception ex) {
 			Flogger.instance.log(Prefix.ERROR, ex.getMessage(), 0);
 			return -1;
 		}
 	}
+	
 
 	public void close() {
 		try {
