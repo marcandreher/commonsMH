@@ -41,9 +41,9 @@
       <version>1.1.1</version>
     </dependency>
     <dependency>
-      <groupId>dev.coly</groupId>
+      <groupId>com.github.marcandreher</groupId>
       <artifactId>discord-oauth2</artifactId>
-      <version>1.0.2</version>
+      <version>8aba79249d</version>
     </dependency>
     <dependency>
       <groupId>org.jline</groupId>
