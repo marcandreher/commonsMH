@@ -13,8 +13,10 @@ import org.jline.terminal.TerminalBuilder;
 
 import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.Flogger.Prefix;
+import commons.marcandreher.Exceptions.CommandAlreadyRegisteredException;
 import commons.marcandreher.Input.Commands.Help;
 import commons.marcandreher.Input.Commands.Logger;
+import commons.marcandreher.Input.Commands.Routes;
 import commons.marcandreher.Input.Commands.SQL;
 import commons.marcandreher.Input.Commands.Shutdown;
 import commons.marcandreher.Input.Commands.TestRoute;
@@ -38,6 +40,7 @@ public class CommandHandler {
         registerCommand(new ThreadCheck());
         registerCommand(new Help());
         registerCommand(new TestRoute());
+        registerCommand(new Routes());
         readUserInput();
     }
 
@@ -94,7 +97,12 @@ public class CommandHandler {
 
 
     public void registerCommand(Command cmd) {
-        initializedCommands.add(cmd);
+        if(initializedCommands.stream().noneMatch(c -> c.getName().equalsIgnoreCase(cmd.getName()))) {
+            initializedCommands.add(cmd);
+        } else {
+            logger.error(new CommandAlreadyRegisteredException("Command " + cmd.getName() + " is already registered!"));
+        }
+       
     }
 
     public void shutdown() {

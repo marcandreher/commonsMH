@@ -41,11 +41,18 @@ public class Router {
     private Flogger logger;
     private Set<RoutePair> routes;
 
+    public static Router instance;
+
     public void addInteruptingCacheTimer(CacheTimer timer) {
         Router.interuptingCacheTimers.add(timer);
     }
 
     public Router(Flogger logger) {
+        if(instance != null) {
+            logger.error(new IllegalStateException("Router can only be instantiated once!"));
+            return;
+        }
+        instance = this;
         this.logger = logger;
         routes = new java.util.HashSet<>();
     }

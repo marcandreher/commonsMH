@@ -79,6 +79,15 @@ public class Flogger {
         }
     }
 
+
+    public void log(Prefix prefix, String message) {
+        handleLog(prefix, message);
+    }
+
+    public void log(String message) {
+        handleLog(null, message);
+    }
+
     public void log(Prefix prefix, String message, int level) {
         if (level <= logLevel)
             handleLog(prefix, message);
@@ -116,9 +125,9 @@ public class Flogger {
         }
 
         if (instanceName != null) {
-
             if (!executor.isShutdown()) {
                 executor.execute(() -> {
+                    
                     String fileName = new SimpleDateFormat("yyyyMMdd'.log'").format(new Date());
                     Path filePath = Paths.get(FOLDER_LOCATION, instanceName + fileName);
 
