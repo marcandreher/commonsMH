@@ -4,13 +4,13 @@ import org.jline.terminal.Terminal;
 
 import commons.marcandreher.Commons.Flogger;
 
-public class ExtendedCommand implements Command {
+public class ExtendedCommand extends DatabaseCommand {
 
     public Terminal terminal;
 
     @Override
     public void executeAction(String[] args, Flogger logger) {
-        throw new UnsupportedOperationException("Unimplemented method 'executeAction'");
+        super.executeAction(args, logger);
     }
 
     @Override

@@ -75,7 +75,7 @@
     <dependency>
       <groupId>club.minnced</groupId>
       <artifactId>discord-webhooks</artifactId>
-      <version>LATEST</version>
+      <version>0.8.4</version>
       <exclusions>
         <exclusion>
           <artifactId>kotlin-stdlib</artifactId>
