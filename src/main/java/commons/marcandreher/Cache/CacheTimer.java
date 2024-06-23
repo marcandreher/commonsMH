@@ -22,12 +22,24 @@ public class CacheTimer {
     private TimeUnit timeUnit;
 
     public CacheTimer(int period, int poolSize, TimeUnit timeUnit) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(poolSize);
         this.period = period;
         this.timeUnit = timeUnit;
-        scheduler.scheduleAtFixedRate(() -> {
-            runUpdate(Flogger.instance);
-        }, 0, period, timeUnit);
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(poolSize);
+
+         Thread delayThread = new Thread(() -> {
+            try {
+                Thread.sleep(15000); 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            scheduler.scheduleAtFixedRate(() -> {
+                runUpdate(Flogger.instance);
+            }, 0, period, timeUnit);
+        });
+
+        delayThread.start();
     }
 
     public boolean isRunning() {
