@@ -71,7 +71,7 @@ public class CommandHandler {
 
                             cmd.executeAction(argsCmd, logger);
 
-                            if(cmd instanceof DatabaseCommand dbCmd) dbCmd.mysql.close();
+                            if(cmd instanceof DatabaseCommand dbCmd) if(dbCmd.mysql != null) dbCmd.mysql.close();
 
                             foundCmd = true;
                             break;
