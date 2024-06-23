@@ -21,6 +21,7 @@ import commons.marcandreher.Input.Commands.SQL;
 import commons.marcandreher.Input.Commands.Shutdown;
 import commons.marcandreher.Input.Commands.TestRoute;
 import commons.marcandreher.Input.Commands.ThreadCheck;
+import commons.marcandreher.Input.Commands.Timers;
 
 public class CommandHandler {
     private Flogger logger;
@@ -40,6 +41,7 @@ public class CommandHandler {
         registerCommand(new Help());
         registerCommand(new TestRoute());
         registerCommand(new Routes());
+        registerCommand(new Timers());
         readUserInput();
     }
 

@@ -19,10 +19,12 @@ public class CacheTimer {
     private int period;
 
     private boolean isRunning = false;
+    private TimeUnit timeUnit;
 
     public CacheTimer(int period, int poolSize, TimeUnit timeUnit) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(poolSize);
         this.period = period;
+        this.timeUnit = timeUnit;
         scheduler.scheduleAtFixedRate(() -> {
             runUpdate(Flogger.instance);
         }, 0, period, timeUnit);
@@ -34,6 +36,7 @@ public class CacheTimer {
 
     public void addAction(Action action) {
         actionList.add(action);
+        TimerRegistry.registerTimer(this, period, timeUnit, action.getClass().getName());
     }
 
     public void runUpdate(Flogger logger) {
