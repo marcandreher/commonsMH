@@ -37,7 +37,6 @@ public class CommandHandler {
         registerCommand(new ThreadCheck());
         registerCommand(new Shutdown());
         registerCommand(new SQL());
-        registerCommand(new ThreadCheck());
         registerCommand(new Help());
         registerCommand(new TestRoute());
         registerCommand(new Routes());
@@ -68,11 +67,11 @@ public class CommandHandler {
                     for (Command cmd : initializedCommands) {
                         if (argsCmd[0].equalsIgnoreCase(cmd.getName())) {
 
-                            if(cmd instanceof ExtendedCommand) ((ExtendedCommand) cmd).terminal = terminal;
+                            if(cmd instanceof ExtendedCommand extCmd) extCmd.terminal = terminal;
 
                             cmd.executeAction(argsCmd, logger);
 
-                            if(cmd instanceof DatabaseCommand) ((DatabaseCommand) cmd).mysql.close();
+                            if(cmd instanceof DatabaseCommand dbCmd) dbCmd.mysql.close();
 
                             foundCmd = true;
                             break;
