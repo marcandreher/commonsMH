@@ -56,25 +56,26 @@ public class CacheTimer {
 
     public void runUpdate(Flogger logger) {
         logger.log(Prefix.INFO, "Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 10);
-       
+        
+        MySQL cacheSQL;
+        try {
+            cacheSQL = Database.getConnection();
+        } catch (SQLException e) {
+            logger.error(e);
+            return;
+        }
+
         for (int i = 0; i < actionList.size(); i++) {
-            MySQL cacheSQL;
-            try {
-                cacheSQL = Database.getConnection();
-            } catch (SQLException e) {
-                logger.error(e);
-                return;
-            }
+
             isRunning = true;
 
             Action ac = actionList.get(i);
             if (ac instanceof DatabaseAction acdb) acdb.mysql = cacheSQL;
             ac.executeAction(logger);
 
-            if (ac instanceof DatabaseAction acdb) acdb.mysql.close();
-            
             isRunning = false;
         }
+        cacheSQL.close();
   
     }
     
