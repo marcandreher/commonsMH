@@ -1,5 +1,6 @@
 package commons.marcandreher.Cache;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -7,8 +8,10 @@ import java.util.concurrent.TimeUnit;
 
 import commons.marcandreher.Cache.Action.Action;
 import commons.marcandreher.Cache.Action.DatabaseAction;
+import commons.marcandreher.Commons.Database;
 import commons.marcandreher.Commons.Flogger;
 import commons.marcandreher.Commons.Flogger.Prefix;
+import commons.marcandreher.Commons.MySQL;
 import commons.marcandreher.Utils.Color;
 
 public class CacheTimer {
@@ -55,14 +58,21 @@ public class CacheTimer {
         logger.log(Prefix.INFO, "Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 10);
        
         for (int i = 0; i < actionList.size(); i++) {
+            MySQL cacheSQL;
+            try {
+                cacheSQL = Database.getConnection();
+            } catch (SQLException e) {
+                logger.error(e);
+                return;
+            }
             isRunning = true;
+
             Action ac = actionList.get(i);
+            if (ac instanceof DatabaseAction acdb) acdb.mysql = cacheSQL;
             ac.executeAction(logger);
 
-            if (ac instanceof DatabaseAction) {
-                DatabaseAction acdb = (DatabaseAction) ac;
-                acdb.mysql.close();
-            }
+            if (ac instanceof DatabaseAction acdb) acdb.mysql.close();
+            
             isRunning = false;
         }
   
