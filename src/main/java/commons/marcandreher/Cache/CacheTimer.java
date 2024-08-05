@@ -38,7 +38,8 @@ public class CacheTimer {
             }
 
             scheduler.scheduleAtFixedRate(() -> {
-                runUpdate(Flogger.instance);
+                
+                runUpdate(Flogger.instance, scheduler);
             }, 0, period, timeUnit);
         });
 
@@ -54,7 +55,7 @@ public class CacheTimer {
         TimerRegistry.registerTimer(this, period, timeUnit, action.getClass().getName());
     }
 
-    public void runUpdate(Flogger logger) {
+    public void runUpdate(Flogger logger, ScheduledExecutorService scheduler) {
         logger.log(Prefix.INFO, "Updating actions | " + Color.GREEN + actionList.size() + " running again in " + period + "m" + Color.RESET, 10);
         
         MySQL cacheSQL;
@@ -74,6 +75,11 @@ public class CacheTimer {
             ac.executeAction(logger);
 
             isRunning = false;
+        }
+        try {
+            scheduler.wait(500);
+        } catch (InterruptedException e) {
+            logger.error(e);
         }
         cacheSQL.close();
   
