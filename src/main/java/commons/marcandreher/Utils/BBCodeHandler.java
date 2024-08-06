@@ -13,6 +13,8 @@ public class BBCodeHandler {
         bbCode = bbCode.replaceAll("\\[url=(.*?)\\](.*?)\\[/url\\]", "<a href=\"$1\">$2</a>");
         bbCode = bbCode.replaceAll("\\[img=(.*?)\\]", "<img style=\"height:25%;width:25%;\" src=\"$1\" alt=\"\">");
         bbCode = bbCode.replaceAll("\\[code\\](.*?)\\[/code\\]", "<code>$1</code>");
+        bbCode = bbCode.replaceAll("\\[h2\\](.*?)\\[/h2\\]", "<h2>$1</h2>");
+        bbCode = bbCode.replaceAll("\\[h1\\](.*?)\\[/h1\\]", "<h1>$1</h1>");
         bbCode = bbCode.replaceAll("\\[quote\\](.*?)\\[/quote\\]", "<blockquote>$1</blockquote>");
         bbCode = bbCode.replaceAll("\\[br\\]", "<br/>");
         return bbCode;
