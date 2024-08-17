@@ -159,9 +159,13 @@ public class WebServer {
         }
 
         Spark.before((req, res) -> {
+            String referer = req.headers("Referer");
+            if (referer == null) referer = "-";
+            
             logger.log(prefix, "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    + "] " + req.ip() + " | " + req.url() + " | " + req.userAgent(), 2);
+                    + "] " + req.ip() + " | " + req.url() + " | " + req.userAgent() + " | " + referer, 2);
         });
+        
 
         Spark.awaitInitialization();
     }

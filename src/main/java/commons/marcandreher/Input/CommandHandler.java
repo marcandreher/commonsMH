@@ -22,11 +22,12 @@ import commons.marcandreher.Input.Commands.Shutdown;
 import commons.marcandreher.Input.Commands.TestRoute;
 import commons.marcandreher.Input.Commands.ThreadCheck;
 import commons.marcandreher.Input.Commands.Timers;
+import commons.marcandreher.Utils.Color;
 
 public class CommandHandler {
     private Flogger logger;
     public static List<Command> initializedCommands = new ArrayList<>();
-    public static final String VERSION = "2.1"; 
+    public static final String VERSION = "2.2"; 
     public static Terminal terminal = null;
 
     public CommandHandler(Flogger logger) {
@@ -78,11 +79,11 @@ public class CommandHandler {
                             foundCmd = true;
                             break;
                         }
-                        ((DefaultHistory) reader.getHistory()).add(argsCmd[0]);
+                        ((DefaultHistory) reader.getHistory()).add(input);
                     }
 
                     if (!foundCmd) {
-                        logger.log(Prefix.INFO, "-> No Command found | Type help", 1);
+                        logger.log(Prefix.INFO, "Command " + Color.GREEN + argsCmd[0] +  Color.RESET +" not found | type help", 1);
                     }
                 } catch (UserInterruptException e) {
                     continue;
@@ -106,7 +107,4 @@ public class CommandHandler {
        
     }
 
-    public void shutdown() {
-        System.exit(0);
-    }
 }
