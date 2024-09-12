@@ -71,6 +71,7 @@ public class GetRequest {
             debugGETRequest.statusCode = response.statusCode();
         } catch (Exception e) {
             debugGETRequest.failed = true;
+            debugGETRequest.statusCode = 500;
         }
         stopwatch.stop();
         debugGETRequest.elapsedTime = stopwatch.getElapsedTime();
